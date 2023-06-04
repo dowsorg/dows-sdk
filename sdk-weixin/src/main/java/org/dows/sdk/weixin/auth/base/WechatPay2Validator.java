@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 import static java.util.Objects.requireNonNull;
-import static org.dows.sdk.client.http.Constant.*;
+import static org.dows.sdk.client.http.HttpConstant.*;
 
 /**
  * 微信支付返回验证器

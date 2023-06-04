@@ -13,8 +13,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
-import static org.dows.sdk.weixin.auth.cipher.Constant.HEX;
-
 /**
  * PEM工具
  */
@@ -31,11 +29,10 @@ public class PemUtil {
      */
     public static PrivateKey loadPrivateKeyFromString(String keyString) {
         try {
-            keyString =
-                    keyString
-                            .replace("-----BEGIN PRIVATE KEY-----", "")
-                            .replace("-----END PRIVATE KEY-----", "")
-                            .replaceAll("\\s+", "");
+            keyString = keyString
+                    .replace("-----BEGIN PRIVATE KEY-----", "")
+                    .replace("-----END PRIVATE KEY-----", "")
+                    .replaceAll("\\s+", "");
             return KeyFactory.getInstance("RSA")
                     .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
         } catch (NoSuchAlgorithmException e) {
@@ -53,14 +50,12 @@ public class PemUtil {
      * @param provider  the provider
      * @return 私钥
      */
-    public static PrivateKey loadPrivateKeyFromString(
-            String keyString, String algorithm, String provider) {
+    public static PrivateKey loadPrivateKeyFromString(String keyString, String algorithm, String provider) {
         try {
-            keyString =
-                    keyString
-                            .replace("-----BEGIN PRIVATE KEY-----", "")
-                            .replace("-----END PRIVATE KEY-----", "")
-                            .replaceAll("\\s+", "");
+            keyString = keyString
+                    .replace("-----BEGIN PRIVATE KEY-----", "")
+                    .replace("-----END PRIVATE KEY-----", "")
+                    .replaceAll("\\s+", "");
             return KeyFactory.getInstance(algorithm, provider)
                     .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
         } catch (NoSuchAlgorithmException e) {
@@ -88,8 +83,7 @@ public class PemUtil {
      * @param provider  the provider
      * @return 私钥
      */
-    public static PrivateKey loadPrivateKeyFromPath(
-            String keyPath, String algorithm, String provider) {
+    public static PrivateKey loadPrivateKeyFromPath(String keyPath, String algorithm, String provider) {
         return loadPrivateKeyFromString(readPrivateKeyStringFromPath(keyPath), algorithm, provider);
     }
 
@@ -193,6 +187,6 @@ public class PemUtil {
     }
 
     public static String getSerialNumber(X509Certificate certificate) {
-        return certificate.getSerialNumber().toString(Constant.HEX).toUpperCase();
+        return certificate.getSerialNumber().toString(SignConstant.HEX).toUpperCase();
     }
 }

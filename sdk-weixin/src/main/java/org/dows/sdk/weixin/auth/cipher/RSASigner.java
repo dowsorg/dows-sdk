@@ -1,5 +1,7 @@
 package org.dows.sdk.weixin.auth.cipher;
 
+import org.dows.sdk.client.util.SignConstant;
+
 import java.security.PrivateKey;
 
 /**
@@ -8,6 +10,6 @@ import java.security.PrivateKey;
 public final class RSASigner extends AbstractSigner {
 
     public RSASigner(String certificateSerialNumber, PrivateKey privateKey) {
-        super("SHA256-RSA2048", Constant.SHA256WITHRSA, certificateSerialNumber, privateKey);
+        super("SHA256-RSA2048", SignConstant.SHA256WITHRSA, certificateSerialNumber, privateKey);
     }
 }

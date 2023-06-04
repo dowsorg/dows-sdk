@@ -76,8 +76,8 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
         httpRequest = new HttpRequest.Builder()
                 .httpMethod(HttpMethod.GET)
                 .url(requestUrl)
-                .addHeader(Constant.ACCEPT, " */*")
-                .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
+                .addHeader(HttpConstant.ACCEPT, " */*")
+                .addHeader(HttpConstant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
                 .build();
         // 下载证书，如果失败会抛出异常
         downloadAndUpdate(wechatPayCertificateMap);

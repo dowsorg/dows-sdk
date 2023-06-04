@@ -1,11 +1,11 @@
 package org.dows.sdk.weixin.auth.notification;
 
 import com.google.gson.Gson;
-import com.wechat.pay.java.core.cipher.AeadCipher;
-import com.wechat.pay.java.core.cipher.Verifier;
-import com.wechat.pay.java.core.exception.MalformedMessageException;
-import com.wechat.pay.java.core.exception.ValidationException;
-import com.wechat.pay.java.core.util.GsonUtil;
+import org.dows.sdk.client.cipher.AeadCipher;
+import org.dows.sdk.client.cipher.Verifier;
+import org.dows.sdk.client.exception.MalformedMessageException;
+import org.dows.sdk.client.exception.ValidationException;
+import org.dows.sdk.client.util.GsonUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

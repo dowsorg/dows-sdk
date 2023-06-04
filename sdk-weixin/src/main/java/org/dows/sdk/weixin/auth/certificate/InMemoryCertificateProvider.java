@@ -1,7 +1,7 @@
 package org.dows.sdk.weixin.auth.certificate;
 
 import org.dows.sdk.client.certificate.CertificateProvider;
-import org.dows.sdk.weixin.auth.cipher.Constant;
+import org.dows.sdk.client.util.SignConstant;
 
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
@@ -39,7 +39,7 @@ public final class InMemoryCertificateProvider implements CertificateProvider {
      */
     @Override
     public X509Certificate getCertificate(String serialNumber) {
-        BigInteger key = new BigInteger(serialNumber, Constant.HEX);
+        BigInteger key = new BigInteger(serialNumber, SignConstant.HEX);
         return certificates.get(key);
     }
 

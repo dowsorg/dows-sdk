@@ -11,7 +11,7 @@ import java.io.InputStream;
 import static java.net.HttpURLConnection.HTTP_MULT_CHOICE;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static java.util.Objects.requireNonNull;
-import static org.dows.sdk.client.http.Constant.*;
+import static org.dows.sdk.client.http.HttpConstant.*;
 
 /**
  * 请求客户端抽象基类

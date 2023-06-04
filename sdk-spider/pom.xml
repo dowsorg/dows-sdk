@@ -2,8 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>dows-sdk</artifactId>
         <groupId>org.dows.cloud</groupId>
+        <artifactId>dows-sdk</artifactId>
         <version>20230604-SNAPSHOT</version>
     </parent>
     <artifactId>sdk-spider</artifactId>
@@ -21,18 +21,16 @@
             <version>1.16.1</version>
         </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/org.webjars.npm/posthtml -->
-        <dependency>
+<!--        <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>posthtml</artifactId>
             <version>0.11.3</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.webjars.npm/posthtml-parser -->
-        <dependency>
+        </dependency>-->
+<!--        <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>posthtml-parser</artifactId>
             <version>0.4.1</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>com.belerweb</groupId>

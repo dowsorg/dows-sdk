@@ -1,7 +1,7 @@
 package org.dows.sdk.client.http;
 
-import org.dows.sdk.client.impl.okhttp.OkHttpClientAdapter;
-import org.dows.sdk.client.impl.okhttp.OkHttpMultiDomainInterceptor;
+import org.dows.sdk.client.okhttp.OkHttpClientAdapter;
+import org.dows.sdk.client.okhttp.OkHttpMultiDomainInterceptor;
 import org.dows.sdk.client.security.Config;
 import org.dows.sdk.client.security.Credential;
 import org.dows.sdk.client.security.Validator;

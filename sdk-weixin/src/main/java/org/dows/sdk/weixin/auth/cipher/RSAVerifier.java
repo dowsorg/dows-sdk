@@ -3,7 +3,7 @@ package org.dows.sdk.weixin.auth.cipher;
 
 import org.dows.sdk.client.certificate.CertificateProvider;
 
-import static org.dows.sdk.weixin.auth.cipher.Constant.SHA256WITHRSA;
+import static org.dows.sdk.client.util.SignConstant.SHA256WITHRSA;
 
 /**
  * RSA验签器
