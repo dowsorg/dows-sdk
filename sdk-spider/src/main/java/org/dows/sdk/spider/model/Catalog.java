@@ -11,6 +11,8 @@ public class Catalog implements Treeable {
     private Long id;
     private Long pid;
     private String name;
+
+    private String code;
     private String icon;
     private String href;
     // 包

@@ -7,7 +7,6 @@ import cn.hutool.extra.template.Template;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.sdk.spider.handler.WeixinDeveloperExtracter;
 import org.dows.sdk.spider.extract.WxOpenExtracter;
 import org.dows.sdk.spider.extract.WxPayExtracter;
 import org.dows.sdk.spider.extract.DyOpenExtracter;
@@ -35,11 +34,6 @@ public class ApiTest {
 //    @Autowired
 //    private CrawlerConfig crawlerConfig;
 
-    @Autowired
-    private WeixinDeveloperSdkCrawler weixinDeveloperSdkCrawler;
-
-    @Autowired
-    private WeixinDeveloperExtracter weixinDeveloperExtracter;
 
     @Autowired
     private WxPayExtracter wxPayExtracter;
@@ -50,16 +44,16 @@ public class ApiTest {
     @Autowired
     private DyOpenExtracter dyOpenExtracter;
 
-    @Autowired
-    private CatalogCrawler catalogCrawler;
+//    @Autowired
+//    private CatalogCrawler catalogCrawler;
 
     @Autowired
     private TemplateEngine templateEngine;
 
-    @Test
-    public void testApi() {
-        catalogCrawler.crawlerApi();
-    }
+//    @Test
+//    public void testApi() {
+//        catalogCrawler.crawlerApi();
+//    }
 
 
 
@@ -70,8 +64,8 @@ public class ApiTest {
     }
     @Test
     public void testDyOpen() {
-        String seed = "classpath://html/application-zijie-api.html";
-        String regex = "//ul[@role='menu']/li/ul//a,../..//span[@title]";
+        String seed = "classpath://html/application-douyin-api.html";
+        String regex = "//ul[@role='menu']/li[@role='menuitem']//a,//span[@title]";
         dyOpenExtracter.genSdk(seed, regex);
         log.info("");
     }
@@ -104,7 +98,7 @@ public class ApiTest {
 
 
 
-    @Test
+/*    @Test
     public void testWxOpen1() {
         log.info("");
         String file = this.getClass().getResource("").getPath() + File.separator + "bean-schema.json";
@@ -199,6 +193,6 @@ public class ApiTest {
             }
         });
 
-    }
+    }*/
 
 }

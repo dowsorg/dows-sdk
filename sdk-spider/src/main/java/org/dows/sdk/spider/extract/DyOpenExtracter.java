@@ -7,7 +7,7 @@ import cn.hutool.extra.template.TemplateEngine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.sdk.spider.model.Catalog;
-import org.dows.pay.spider.schema.*;
+import org.dows.sdk.spider.schema.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.seimicrawler.xpath.JXDocument;
@@ -29,8 +29,7 @@ import java.util.stream.Collectors;
 @Service
 public class DyOpenExtracter implements Extractable {
 
-    private final TemplateEngine templateEngine;
-    private static Map<String, String> map = new HashMap<>();
+    private static final Map<String, String> map = new HashMap<>();
 
     static {
         map.put("overview", "//div[@class='overview']/*/text()");
@@ -41,6 +40,7 @@ public class DyOpenExtracter implements Extractable {
         map.put("descr", "//div[@class='overview']/*/text()");
     }
 
+    private final TemplateEngine templateEngine;
 
     public void genSdk(String seed, String regex) {
 
@@ -122,64 +122,112 @@ public class DyOpenExtracter implements Extractable {
     }
 
     private List<Catalog> getCatalogs(String seed, String regex) {
+        String prefix = "/docs/resource/zh-CN/mini-app/develop/server/";
         List<Catalog> catalogs = new ArrayList<>();
         JXDocument jxDocument = JXDocument.create(getDocument(seed));
         String[] regexs = regex.split(",");
         List<JXNode> jxNodes = jxDocument.selN(regexs[0]);
         Long id1 = 1L;
-        Catalog catalogPkg = null;
+
+        Map<String, Catalog> beanCatalogMap = new HashMap<>();
+        Map<String, Catalog> pkgCatalogMap = new HashMap<>();
         for (JXNode jxNode : jxNodes) {
-            Catalog catalogBean = null;
-            List<JXNode> methodNodes = jxNode.sel("li/span/a");
-            if (methodNodes.size() != 0) {
-                JXNode beanNode = jxNode.selOne("../..//a");
-                if (beanNode != null) {
-                    // bean
-                    log.info("bean:{}", beanNode.asString());
-                    catalogBean = new Catalog();
-                    catalogBean.setName(beanNode.selOne("/text()").asString());
-                    catalogBean.setId(id1);
-                    catalogBean.setType("bean");
-                    catalogBean.setPatent(catalogPkg);
-                    if (catalogPkg != null) {
-                        catalogBean.setPid(catalogPkg.getId());
-                    } else {
-                        catalogBean.setPid(0L);
+
+            Catalog methodCatalog = null;
+            Catalog beanCatalog = null;
+            Catalog pkgCatalog = null;
+            String href = jxNode.selOne("/@href").asString();
+            String hrefName = jxNode.selOne(regexs[1]).selOne("/text()").asString();
+            String pkgBeanMethodString = href.substring(prefix.length());
+
+            int methodIndex = pkgBeanMethodString.lastIndexOf("/");
+
+
+
+            String pkgBeanString = pkgBeanMethodString.substring(0, methodIndex);
+            int beanIndex = pkgBeanString.lastIndexOf("/");
+
+
+
+            if ( beanIndex != -1) {
+
+                String pkg = pkgBeanMethodString.substring(0, beanIndex);
+                if(!StrUtil.isBlank(pkg)){
+                    String javaPkg = pkg.replaceAll("/", ".");
+
+                    pkgCatalog = pkgCatalogMap.get(javaPkg);
+                    if (pkgCatalog == null) {
+                        pkgCatalog = new Catalog();
+                        pkgCatalog.setId(id1);
+                        pkgCatalog.setPid(0L);
+                        pkgCatalog.setPkg(javaPkg);
+                        pkgCatalog.setType("pkg");
+                        pkgCatalogMap.put(javaPkg, pkgCatalog);
+                        //catalogs.add(catalogs.size() - 1, pkgCatalog);
+                        catalogs.add(pkgCatalog);
+                        id1++;
                     }
-                    id1++;
-                    catalogs.add(catalogBean);
+                    /*if (beanCatalog != null) {
+                        beanCatalog.setPatent(pkgCatalog);
+                        beanCatalog.setPid(pkgCatalog.getId());
+                        pkgCatalog.addChild(beanCatalog);
+
+                    }*/
                 }
-                // method
-                for (JXNode methodNode : methodNodes) {
-                    log.info("method:{}", methodNode.asString());
-                    Catalog catalogMethod = new Catalog();
-                    catalogMethod.setName(methodNode.selOne("/text()").asString());
-                    catalogMethod.setHref(methodNode.selOne("/@href").asString());
-                    catalogMethod.setType("method");
-                    catalogMethod.setId(id1);
-                    catalogMethod.setPid(catalogBean.getId());
-                    catalogMethod.setPatent(catalogBean);
-                    id1++;
-                    catalogBean.addChild(catalogMethod);
-                    catalogs.add(catalogMethod);
-                }
-            } else {
-                // pkg
-                JXNode pkg = jxNode.selOne("../..//a");
-                if (pkg != null) {
-                    log.info("pkg:{}", pkg.asString());
-                    catalogPkg = new Catalog();
-                    catalogPkg.setName(pkg.selOne("/text()").asString());
-                    catalogPkg.setId(id1);
-                    catalogPkg.setType("pkg");
-                    catalogPkg.setPid(0L);
-                    id1++;
-                    if (catalogBean != null) {
-                        catalogPkg.addChild(catalogBean);
-                    }
-                    catalogs.add(catalogPkg);
-                }
+
             }
+
+            if (!StrUtil.isBlank(pkgBeanString)) {
+                String beanName = null;
+                if (beanIndex != -1) {
+                    beanName = pkgBeanString.substring(beanIndex + 1);
+                } else {
+                    beanName = pkgBeanString;
+                }
+                beanCatalog = beanCatalogMap.get(beanName);
+                if (beanCatalog == null) {
+                    beanCatalog = new Catalog();
+                    beanCatalog.setId(id1);
+                    beanCatalog.setName(beanName);
+                    beanCatalog.setCode(beanName);
+                    beanCatalog.setType("bean");
+                    beanCatalog.setPid(0L);
+
+                    beanCatalogMap.put(beanName, beanCatalog);
+                    //catalogs.add(catalogs.size() - 1, beanCatalog);
+                    catalogs.add(beanCatalog);
+                    id1++;
+                }
+                if (pkgCatalog != null) {
+                    beanCatalog.setPatent(pkgCatalog);
+                    beanCatalog.setPid(pkgCatalog.getId());
+                    pkgCatalog.addChild(beanCatalog);
+                }
+               /* if (methodCatalog != null) {
+                    methodCatalog.setPid(beanCatalog.getId());
+                    methodCatalog.setPatent(beanCatalog);
+                    beanCatalog.addChild(methodCatalog);
+                    beanCatalog.setPid(pkgCatalog.getId());
+                }*/
+            }
+
+            if (methodIndex != -1) {
+                String methodCode = pkgBeanMethodString.substring(methodIndex + 1);
+                methodCatalog = new Catalog();
+                methodCatalog.setName(hrefName);
+                methodCatalog.setCode(methodCode);
+                methodCatalog.setType("method");
+                methodCatalog.setHref(href);
+                methodCatalog.setId(id1);
+                id1++;
+                if (beanCatalog != null) {
+                    methodCatalog.setPid(beanCatalog.getId());
+                    methodCatalog.setPatent(beanCatalog);
+                    beanCatalog.addChild(methodCatalog);
+                }
+                catalogs.add(methodCatalog);
+            }
+
         }
         return catalogs;
     }
@@ -288,10 +336,6 @@ public class DyOpenExtracter implements Extractable {
     */
 
 
-
-
-
-
     private void buildModuleSchema(List<Catalog> catalogs, ProjectSchema projectSchema,
                                    List<ModuleSchema> moduleSchemas, List<BeanSchema> beanSchemas) {
 
@@ -358,7 +402,7 @@ public class DyOpenExtracter implements Extractable {
                     beanSchema.addMethod(methodSchema);
                 }
 
-                Document document = getDocument(catalog.getWxOpenDocUrl());
+                /*Document document = getDocument(catalog.getWxOpenDocUrl());
                 JXDocument jxDocument = JXDocument.create(document);
                 map.forEach((k, v) -> {
                     List<JXNode> jxNodes = jxDocument.selN(v);
@@ -401,7 +445,7 @@ public class DyOpenExtracter implements Extractable {
                         }
                     }
                     //log.info("jxNodes:{}", jxNodes);
-                });
+                });*/
             }
         }
     }

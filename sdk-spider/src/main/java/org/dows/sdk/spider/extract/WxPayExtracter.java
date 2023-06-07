@@ -7,7 +7,7 @@ import cn.hutool.extra.template.TemplateEngine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.sdk.spider.model.Catalog;
-import org.dows.pay.spider.schema.*;
+import org.dows.sdk.spider.schema.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.seimicrawler.xpath.JXDocument;
