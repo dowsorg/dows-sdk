@@ -15,8 +15,9 @@
     <dependencies>
 
         <dependency>
-            <groupId></groupId>
-            <artifactId></artifactId>
+            <groupId>org.dows.cloud</groupId>
+            <artifactId>sdk-client</artifactId>
+            <version>20230604-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
@@ -106,7 +107,7 @@
                     <dependency>
                         <groupId>commons-codec</groupId>
                         <artifactId>commons-codec</artifactId>
-                       <!-- <version>1.15</version>-->
+                        <version>1.15</version>
                     </dependency>
                 </dependencies>
             </plugin>
