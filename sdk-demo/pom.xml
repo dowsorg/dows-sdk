@@ -1,89 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>dows-parent</artifactId>
-        <groupId>org.dows.framework</groupId>
-        <version>20220701-SNAPSHOT</version>
+        <artifactId>dows-sdk</artifactId>
+        <groupId>org.dows.cloud</groupId>
+        <version>20230604-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.dows.cloud</groupId>
-    <artifactId>dows-sdk</artifactId>
-    <version>20230604-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <artifactId>sdk-demo</artifactId>
 
 
-    <properties>
-        <registry.host>https://q7q2jzgk.mirror.aliyuncs.com</registry.host>
-        <registry.username>zhang_yingliang@163.com</registry.username>
-        <registry.password>abcdef</registry.password>
-        <image.alias>${project.name}</image.alias>
-    </properties>
 
-    <modules>
-        <module>sdk-spider</module>
-        <module>sdk-weixin</module>
-        <module>sdk-douyin</module>
-        <module>sdk-client</module>
-        <module>sdk-demo</module>
-    </modules>
+    <dependencies>
 
-    <distributionManagement>
-        <repository>
-            <id>rdc-releases</id>
-            <url>https://packages.aliyun.com/maven/repository/2290151-release-R4vX5T/</url>
-        </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <url>https://packages.aliyun.com/maven/repository/2290151-snapshot-aLhHBl/</url>
-        </snapshotRepository>
-    </distributionManagement>
+        <dependency>
+            <groupId></groupId>
+            <artifactId></artifactId>
+        </dependency>
 
+    </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.sql</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.sql</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
+
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.0.0</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.0</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                    <encoding>utf-8</encoding>
-                </configuration>
-            </plugin>
-
-            <!--<plugin>
-
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.43.0</version>
-
-                &lt;!&ndash;全局配置&ndash;&gt;
+                <!--全局配置-->
                 <configuration>
-                    &lt;!&ndash;这一部分是为了实现对远程docker容器的控制&ndash;&gt;
-                    &lt;!&ndash;docker主机地址,用于完成docker各项功能,注意是tcp不是http!&ndash;&gt;
+                    <!--这一部分是为了实现对远程docker容器的控制-->
+                    <!--docker主机地址,用于完成docker各项功能,注意是tcp不是http!-->
                     <dockerHost>tcp://localhost:2375</dockerHost>
-                    &lt;!&ndash;docker远程访问所需证书地址,如果docker远程主机没有启用TLS验证则不需要配证书&ndash;&gt;
-                    &lt;!&ndash;<certPath>${project.basedir}/docker/ssh</certPath>&ndash;&gt;
+                    <!--docker远程访问所需证书地址,如果docker远程主机没有启用TLS验证则不需要配证书-->
+                    <!--<certPath>${project.basedir}/docker/ssh</certPath>-->
 
-                    &lt;!&ndash;这一部分是为了实现docker镜像的构建和推送&ndash;&gt;
-                    &lt;!&ndash;registry地址,用于推送,拉取镜像,我这里用的是阿里的registry&ndash;&gt;
+                    <!--这一部分是为了实现docker镜像的构建和推送-->
+                    <!--registry地址,用于推送,拉取镜像,我这里用的是阿里的registry-->
                     <registry>${registry.host}</registry>
-                    &lt;!&ndash;认证配置,用于私有registry认证,如果忘记了可以去阿里的registry查看&ndash;&gt;
+                    <!--认证配置,用于私有registry认证,如果忘记了可以去阿里的registry查看-->
                     <authConfig>
                         <push>
                             <username>${registry.username}</username>
@@ -91,42 +74,42 @@
                         </push>
                     </authConfig>
 
-                    &lt;!&ndash;镜像相关配置,支持多镜像&ndash;&gt;
+                    <!--镜像相关配置,支持多镜像-->
                     <images>
-                        &lt;!&ndash; 单个镜像配置 &ndash;&gt;
+                        <!-- 单个镜像配置 -->
                         <image>
-                            &lt;!&ndash;镜像名(含版本号)&ndash;&gt;
+                            <!--镜像名(含版本号)-->
                             <name>dows/sdk-demo:20220701</name>
-                            &lt;!&ndash;别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置&ndash;&gt;
+                            <!--别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置-->
                             <alias>${image.alias}</alias>
-                            &lt;!&ndash;镜像build相关配置&ndash;&gt;
+                            <!--镜像build相关配置-->
                             <build>
-                                &lt;!&ndash;使用dockerFile文件&ndash;&gt;
+                                <!--使用dockerFile文件-->
                                 <dockerFile>${project.basedir}/Dockerfile</dockerFile>
                             </build>
-                            &lt;!&ndash;配置docker-compose文件&ndash;&gt;
+                            <!--配置docker-compose文件-->
                             <external>
                                 <type>compose</type>
                                 <basedir>${project.basedir}</basedir>
                                 <composeFile>docker-compose.yml</composeFile>
                             </external>
-                            &lt;!&ndash;容器run相关配置&ndash;&gt;
+                            <!--容器run相关配置-->
                             <run>
-                                &lt;!&ndash;配置运行时容器命名策略为:别名,如果不指定则默认为none,即使用随机分配名称&ndash;&gt;
+                                <!--配置运行时容器命名策略为:别名,如果不指定则默认为none,即使用随机分配名称-->
                                 <namingStrategy>alias</namingStrategy>
                             </run>
                         </image>
                     </images>
                 </configuration>
                 <dependencies>
-                    &lt;!&ndash;该插件需要这个依赖&ndash;&gt;
+                    <!--该插件需要这个依赖-->
                     <dependency>
                         <groupId>commons-codec</groupId>
                         <artifactId>commons-codec</artifactId>
-                        <version>1.11</version>
+                       <!-- <version>1.15</version>-->
                     </dependency>
                 </dependencies>
-            </plugin>-->
+            </plugin>
 
             <!--使用docker-maven-plugin插件-->
             <!--<plugin>
