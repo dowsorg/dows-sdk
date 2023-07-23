@@ -168,6 +168,37 @@
                 </configuration>
             </plugin>-->
 
+            <!-- Jib插件 -->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration><!-- 拉取所需的基础镜像 - 这里用于运行springboot项目 -->
+                    <from>
+                        <image>openjdk:alpine</image>
+                    </from><!-- 最后生成的镜像配置 -->
+                    <to><!-- push到阿里云镜像仓库，如果是其它镜像仓库，将下面地址替换掉即可，ex: `Docker Hub` 的 `docker.io/dows/xxx` -->
+                        <image>registry.cn-hangzhou.aliyuncs.com/dows/demo</image><!-- 镜像版本号 -->
+                        <tags>
+                            <tag>v1</tag>
+                        </tags>
+                        <auth>
+                            <username>账号</username>
+                            <password>密码</password>
+                        </auth>
+                    </to>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
         </plugins>
     </build>
 </project>
