@@ -89,11 +89,11 @@
                                 <dockerFile>${project.basedir}/Dockerfile</dockerFile>
                             </build>
                             <!--配置docker-compose文件-->
-                            <external>
+                            <!--<external>
                                 <type>compose</type>
                                 <basedir>${project.basedir}</basedir>
                                 <composeFile>docker-compose.yml</composeFile>
-                            </external>
+                            </external>-->
                             <!--容器run相关配置-->
                             <run>
                                 <!--配置运行时容器命名策略为:别名,如果不指定则默认为none,即使用随机分配名称-->
@@ -135,7 +135,7 @@
                     <imageTags>
                         <imageTag>0.1</imageTag>
                     </imageTags>
-                    &lt;!&ndash; 指定 Dockerfile 路径&ndash;&gt;
+                    &lt;!&ndash; 指定 dockerfile 路径&ndash;&gt;
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
                     &lt;!&ndash;指定远程 docker api地址 也就是服务器ip+docker的端口号&ndash;&gt;
                     <dockerHost>http://192.168.31.104:2375</dockerHost>
