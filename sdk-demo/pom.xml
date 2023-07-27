@@ -11,13 +11,22 @@
     <artifactId>sdk-demo</artifactId>
 
 
-
     <dependencies>
 
         <dependency>
             <groupId>org.dows.cloud</groupId>
             <artifactId>sdk-client</artifactId>
             <version>20230604-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
 
     </dependencies>
@@ -50,8 +59,20 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -80,7 +101,7 @@
                         <!-- 单个镜像配置 -->
                         <image>
                             <!--镜像名(含版本号)-->
-                            <name>dows/sdk-demo:20220701</name>
+                            <name>dxzsaas/sdk-demo:t-v1-20220701</name>
                             <!--别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置-->
                             <alias>${image.alias}</alias>
                             <!--镜像build相关配置-->
