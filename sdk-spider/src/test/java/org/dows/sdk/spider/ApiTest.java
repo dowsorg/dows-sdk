@@ -93,7 +93,7 @@ public class ApiTest {
         buildTree(channel, path, treeNodes);
         buildTree(channel1, path1, treeNodes);
         buildTree(channel1, path2, treeNodes);
-        List<Tree<String>> build = TreeUtil.build(treeNodes, "weixin");
+        List<Tree<String>> build = TreeUtil.build(treeNodes, "alipay");
         System.out.println(JSONUtil.toJsonPrettyStr(build));
     }
 
@@ -110,14 +110,14 @@ public class ApiTest {
 //        String channel = "";
 
 //
-//        TreeNode<String> treeRoot = new TreeNode();
-//        treeRoot.setId(channel);
-//        treeRoot.setName(channel);
-//        //treeRoot.setParentId("");
-//        Map<String, Object> rootMap = new HashMap<>();
-//        rootMap.put("type", "channel");
-//        treeRoot.setExtra(rootMap);
-//        treeNodes.add(treeRoot);
+        TreeNode<String> treeRoot = new TreeNode();
+        treeRoot.setId(channel);
+        treeRoot.setName(channel);
+        //treeRoot.setParentId("");
+        Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("type", "channel");
+        treeRoot.setExtra(rootMap);
+        treeNodes.add(treeRoot);
 
         String clazzId = UUID.fastUUID().toString();
         String methodId = UUID.fastUUID().toString();
