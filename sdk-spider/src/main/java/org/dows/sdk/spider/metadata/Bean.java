@@ -1,5 +1,7 @@
 package org.dows.sdk.spider.metadata;
 
+import cn.hutool.json.JSONConfig;
+import cn.hutool.json.JSONUtil;
 import lombok.Data;
 
 import java.util.Map;
@@ -25,4 +27,5 @@ public class Bean {
     private Map<String, Field> fields;
     //  方法
     private Map<String, Method> methods;
+
 }

@@ -8,5 +8,6 @@ import java.util.Map;
 public class Interfaz {
     private String pkg;
     private String suffix;
+    private Map<String,Annotation> annotations;
     private Map<String, Method> methods;
 }

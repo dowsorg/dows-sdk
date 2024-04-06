@@ -10,8 +10,9 @@ public class Method {
     private String httpMethod;
     private String httpUri;
     private String version;
+    // 如果暴露，那么则提升到api一份
     private Boolean expose;
-    private Annotation annotation;
+    private Map<String, Annotation> annotations;
     private Map<String, Field> inputs;
     private Map<String, Field> output;
 }
