@@ -7,15 +7,16 @@ import java.util.List;
 
 //alipay:(//div[@class="ant-tree-list-holder-inner"]//a[contains(@href, "_")])
 @Data
+//aside[@class='sidebar']/div/div/ul/li//a
 public class ApiElements {
 
     // 接口文档
     private String docUrl;
 
     // 包路径
-    @Extract(channel = "alipay", xpath = "")
-    @Extract(channel = "douyin", xpath = "")
-    @Extract(channel = "weixin", xpath = "//div[@class='Breadcrumb']//span[@class='breadcrumb-inner is-link']")
+//    @Extract(channel = "alipay", xpath = "")
+//    @Extract(channel = "douyin", xpath = "")
+//    @Extract(channel = "weixin", xpath = "//div[@class='Breadcrumb']//span[@class='breadcrumb-inner is-link']")
     private String pkg;
 
     // class
