@@ -1,0 +1,87 @@
+{
+  "Demo": {
+    "pkg": "org.dows.demo",
+    "suffix": "rest",
+    "descr": "演示api",
+    "type": "class",
+    "annotations": {
+      "DemoApiAnnotation": {
+
+      }
+    },
+    "interface": {
+      "pkg": "",
+      "suffix": "api"
+    },
+    "fields": {
+      "aa": {
+        "code": "",
+        "type": "返回类型[string,long...]",
+        "name": "参数2",
+        "required": true,
+        "descr": "描述",
+        "def": "默认值"
+      }
+    },
+    "methods": {
+      "xxx": {
+        "descr": "描述",
+        "httpMethod": "GET",
+        "httpUri": "/api1",
+        "version": "0.0.1",
+        "expose": true,
+        "annotations": {
+          "org.dows.demo.DemoApiAnnotation": {
+            "name": "参数1",
+            "type": "string",
+            "required": true,
+            "def": "默认值",
+            "descr": "描述"
+          }
+        },
+        "inputs": {
+          "dd": {
+            "name": "参数1",
+            "type": "string",
+            "required": true,
+            "def": "默认值",
+            "descr": "描述"
+          },
+          "demoRequests": {
+            "type": "List:DemoRequest",
+            "pkg": "com.example.demo",
+            "descr": "请求示例",
+            "fields": [
+              {
+                "code": "",
+                "name": "参数1",
+                "type": "类型1",
+                "required": true,
+                "def": "默认值",
+                "descr": "参数2的描述"
+              },
+              {
+                "code": "",
+                "name": "参数2",
+                "type": "类型2",
+                "required": true,
+                "def": "默认值",
+                "descr": "参数2的描述"
+              }
+            ]
+          }
+        },
+        "output": {
+          "aa": {
+            "code": "",
+            "type": "返回类型[string,long...]",
+            "name": "参数2",
+            "required": true,
+            "descr": "描述",
+            "def": "默认值"
+          }
+        }
+      }
+    }
+  }
+}

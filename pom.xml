@@ -18,6 +18,7 @@
         <module>sdk-weixin</module>
         <module>sdk-douyin</module>
         <module>sdk-client</module>
+        <module>sdk-extract</module>
     </modules>
 
     <distributionManagement>
