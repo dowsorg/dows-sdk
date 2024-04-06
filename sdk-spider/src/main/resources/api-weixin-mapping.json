@@ -6,12 +6,29 @@
     "type": "class",
     "annotations": {
       "DemoApiAnnotation": {
-
       }
     },
-    "interface": {
-      "pkg": "",
-      "suffix": "api"
+    "interfaces": {
+      "interface_1": {
+        "pkg": "",
+        "suffix": "api",
+        "methods": {
+          "descr": "描述",
+          "httpMethod": "GET",
+          "httpUri": "/api1",
+          "version": "0.0.1",
+          "expose": true,
+          "annotations": {
+            "org.dows.demo.DemoApiAnnotation": {
+              "name": "参数1",
+              "type": "string",
+              "required": true,
+              "def": "默认值",
+              "descr": "描述"
+            }
+          }
+        }
+      }
     },
     "fields": {
       "aa": {
