@@ -5,6 +5,6 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface FieldMappings {
-    FieldMapping[] value();
+public @interface ElementMappings {
+    ElementMapping[] value();
 }
