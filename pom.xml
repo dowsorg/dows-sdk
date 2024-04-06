@@ -13,11 +13,20 @@
     <version>20230604-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+
+    <properties>
+        <registry.host>registry.cn-hangzhou.aliyuncs.com</registry.host>
+        <registry.username>zhang_yingliang@163.com</registry.username>
+        <registry.password>dowsdxz123456</registry.password>
+        <image.alias>${project.name}</image.alias>
+    </properties>
+
     <modules>
         <module>sdk-spider</module>
         <module>sdk-weixin</module>
         <module>sdk-douyin</module>
         <module>sdk-client</module>
+        <module>sdk-demo</module>
         <module>sdk-extract</module>
     </modules>
 
@@ -57,6 +66,140 @@
                     <encoding>utf-8</encoding>
                 </configuration>
             </plugin>
+
+            <!--<plugin>
+
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.43.0</version>
+
+                &lt;!&ndash;全局配置&ndash;&gt;
+                <configuration>
+                    &lt;!&ndash;这一部分是为了实现对远程docker容器的控制&ndash;&gt;
+                    &lt;!&ndash;docker主机地址,用于完成docker各项功能,注意是tcp不是http!&ndash;&gt;
+                    <dockerHost>tcp://localhost:2375</dockerHost>
+                    &lt;!&ndash;docker远程访问所需证书地址,如果docker远程主机没有启用TLS验证则不需要配证书&ndash;&gt;
+                    &lt;!&ndash;<certPath>${project.basedir}/docker/ssh</certPath>&ndash;&gt;
+
+                    &lt;!&ndash;这一部分是为了实现docker镜像的构建和推送&ndash;&gt;
+                    &lt;!&ndash;registry地址,用于推送,拉取镜像,我这里用的是阿里的registry&ndash;&gt;
+                    <registry>${registry.host}</registry>
+                    &lt;!&ndash;认证配置,用于私有registry认证,如果忘记了可以去阿里的registry查看&ndash;&gt;
+                    <authConfig>
+                        <push>
+                            <username>${registry.username}</username>
+                            <password>${registry.password}</password>
+                        </push>
+                    </authConfig>
+
+                    &lt;!&ndash;镜像相关配置,支持多镜像&ndash;&gt;
+                    <images>
+                        &lt;!&ndash; 单个镜像配置 &ndash;&gt;
+                        <image>
+                            &lt;!&ndash;镜像名(含版本号)&ndash;&gt;
+                            <name>dows/sdk-demo:20220701</name>
+                            &lt;!&ndash;别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置&ndash;&gt;
+                            <alias>${image.alias}</alias>
+                            &lt;!&ndash;镜像build相关配置&ndash;&gt;
+                            <build>
+                                &lt;!&ndash;使用dockerFile文件&ndash;&gt;
+                                <dockerFile>${project.basedir}/Dockerfile</dockerFile>
+                            </build>
+                            &lt;!&ndash;配置docker-compose文件&ndash;&gt;
+                            <external>
+                                <type>compose</type>
+                                <basedir>${project.basedir}</basedir>
+                                <composeFile>docker-compose.yml</composeFile>
+                            </external>
+                            &lt;!&ndash;容器run相关配置&ndash;&gt;
+                            <run>
+                                &lt;!&ndash;配置运行时容器命名策略为:别名,如果不指定则默认为none,即使用随机分配名称&ndash;&gt;
+                                <namingStrategy>alias</namingStrategy>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <dependencies>
+                    &lt;!&ndash;该插件需要这个依赖&ndash;&gt;
+                    <dependency>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                        <version>1.11</version>
+                    </dependency>
+                </dependencies>
+            </plugin>-->
+
+            <!--使用docker-maven-plugin插件-->
+            <!--<plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                &lt;!&ndash;将插件绑定在某个phase执行&ndash;&gt;
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        &lt;!&ndash;将插件绑定在package这个phase上。也就是说，用户只需执行mvn package ，就会自动执行mvn docker:build&ndash;&gt;
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    &lt;!&ndash;指定生成的镜像名,前面的那个名字你随便改,后面的引用,不能动&ndash;&gt;
+                    <imageName>dz/${project.artifactId}</imageName>
+                    &lt;!&ndash;指定标签,也就是版本号,可以自定义&ndash;&gt;
+                    <imageTags>
+                        <imageTag>0.1</imageTag>
+                    </imageTags>
+                    &lt;!&ndash; 指定 Dockerfile 路径&ndash;&gt;
+                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                    &lt;!&ndash;指定远程 docker api地址 也就是服务器ip+docker的端口号&ndash;&gt;
+                    <dockerHost>http://192.168.31.104:2375</dockerHost>
+                    &lt;!&ndash; 这里是复制 jar 包到 docker 容器指定目录配置 &ndash;&gt;
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            &lt;!&ndash;jar 包所在的路径 此处配置的 即对应 target 目录&ndash;&gt;
+                            <directory>${project.build.directory}</directory>
+                            &lt;!&ndash; 需要包含的 jar包 ，这里对应的是 Dockerfile中添加的文件名　&ndash;&gt;
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>-->
+
+            <!-- Jib插件 -->
+            <!--<plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>&lt;!&ndash; 拉取所需的基础镜像 - 这里用于运行springboot项目 &ndash;&gt;
+                    <from>
+                        <image>openjdk:alpine</image>
+                    </from>&lt;!&ndash; 最后生成的镜像配置 &ndash;&gt;
+                    <to>&lt;!&ndash; push到阿里云镜像仓库，如果是其它镜像仓库，将下面地址替换掉即可，ex: `Docker Hub` 的 `docker.io/dows/xxx` &ndash;&gt;
+                        <image>registry.cn-hangzhou.aliyuncs.com/dows/demo</image>&lt;!&ndash; 镜像版本号 &ndash;&gt;
+                        <tags>
+                            <tag>v1</tag>
+                        </tags>
+                        <auth>
+                            <username>账号</username>
+                            <password>密码</password>
+                        </auth>
+                    </to>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
+
+
         </plugins>
     </build>
 </project>
