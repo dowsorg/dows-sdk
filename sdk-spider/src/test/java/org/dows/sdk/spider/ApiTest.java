@@ -17,10 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @SpringBootTest
@@ -94,19 +92,55 @@ public class ApiTest {
         Element methodElement = new MethodElement();
         Element pkgElement = new PkgElement();
         Element classElement = new ClassElement();
-        Element fieldElement = new FieldElement();
+        FieldElement fieldElement = new FieldElement();
 
-        Map<ElementType, Element> elements = new HashMap<>();
+
+        FieldElement f1 = new FieldElement();
+        f1.setType("String");
+        f1.setCode("aaa");
+        f1.setDescr("试");
+
+        FieldElement f2 = new FieldElement();
+        f2.setType("String");
+        f2.setCode("bbb");
+        f2.setDescr("测");
+
+
+        FieldElement f3 = new FieldElement();
+        f3.setType("String");
+        f3.setCode("bbb");
+        f3.setDescr("测");
+
+        FieldElement f33 = new FieldElement();
+        f33.setType("String");
+        f33.setCode("bbb-3");
+        f33.setDescr("测3");
+
+        List<FieldElement> fieldElements0 = new ArrayList<>();
+        Map<String, List<FieldElement>> fieldMap0 = new ConcurrentHashMap<>();
+        fieldElements0.add(f33);
+        fieldMap0.put("aaa", fieldElements0);
+        f3.setFields(fieldMap0);
+
+
+        List<FieldElement> fieldElements = new ArrayList<>();
+        Map<String, List<FieldElement>> fieldMap = new ConcurrentHashMap<>();
+        fieldElements.add(f1);
+        fieldElements.add(f2);
+        fieldMap.put("aaa", fieldElements);
+        fieldElement.setFields(fieldMap);
+
+        Map<ElementType, Element> elements = new ConcurrentHashMap<>();
         elements.put(ElementType.PKG_ELEMENT, pkgElement);
         elements.put(ElementType.CLASS_ELEMENT, classElement);
         elements.put(ElementType.METHOD_ELEMENT, methodElement);
         elements.put(ElementType.FIELD_ELEMENT, fieldElement);
 
         buildTree(channel, path, treeNodes, elements);
-        buildTree(channel1, path1, treeNodes, elements);
-        buildTree(channel1, path2, treeNodes, elements);
+//        buildTree(channel1, path1, treeNodes, elements);
+//        buildTree(channel1, path2, treeNodes, elements);
 
-        List<Tree<String>> build = TreeUtil.build(treeNodes, "alipay");
+        List<Tree<String>> build = TreeUtil.build(treeNodes, "weixin");
         System.out.println(JSONUtil.toJsonPrettyStr(build));
     }
 
@@ -139,7 +173,7 @@ public class ApiTest {
 
         Map<String, Object> fieldMap = elements.get(ElementType.FIELD_ELEMENT).toMap();
         // 多个参数
-        reduceField(clazzId, fieldMap, elements, treeNodes);
+        reduceField(methodId, fieldMap, treeNodes);
 
         TreeNode<String> treeMethod = new TreeNode<>();
         treeMethod.setId(methodId);
@@ -183,23 +217,41 @@ public class ApiTest {
 
     }
 
-    private static void reduceField(String parentId, Map<String, Object> fieldMap,
-                                    Map<ElementType, ? extends Element> elements, List<TreeNode<String>> treeNodes) {
+    private static void reduceField(String parentId, Map<String, Object> fieldMap, List<TreeNode<String>> treeNodes) {
         fieldMap.forEach((k, v) -> {
-            if (k.equals("name") && v != null) {
-                FieldElement fe = (FieldElement) v;
-                Map<String, Object> map = fe.toMap();
-                reduceField(UUID.fastUUID().toString(), map, elements, treeNodes);
+            if (k.equals("fields") && v != null) {
+
+                Map<String, List<FieldElement>> fem = (Map) v;
+                Set<String> fieldNames = fem.keySet();
+                for (String fieldName : fieldNames) {
+                    TreeNode<String> treeField = new TreeNode<>();
+                    //treeField.set
+                    treeField.setName(fieldName);
+                    String id = UUID.fastUUID().toString();
+                    treeField.setId(id);
+
+                    List<FieldElement> fieldElements = fem.get(fieldName);
+                    for (FieldElement fieldElement : fieldElements) {
+//                        Map<String, Object> map = fieldElement.toMap("code", "type", "descr", "required", "def");
+                        Map<String, Object> map = fieldElement.toMap();
+                        //treeField.setExtra(map);
+                        treeNodes.add(treeField);
+                        reduceField(id, map, treeNodes);
+                    }
+
+                }
+            } else {
+
             }
-            String fieldId = UUID.fastUUID().toString();
-            TreeNode<String> treeField = new TreeNode<>();
-            //treeField.setName("");
-            treeField.setId(fieldId);
-            treeField.setParentId(parentId);
-            Map<String, Object> map = elements.get(ElementType.FIELD_ELEMENT).toMap();
-            treeField.setExtra(map);
-            treeNodes.add(treeField);
         });
+        fieldMap.remove("fields");
+        String fieldId = UUID.fastUUID().toString();
+        TreeNode<String> treeField = new TreeNode<>();
+        //treeField.setName("");
+        treeField.setId(fieldId);
+        treeField.setParentId(parentId);
+        treeField.setExtra(fieldMap);
+        treeNodes.add(treeField);
     }
 
 

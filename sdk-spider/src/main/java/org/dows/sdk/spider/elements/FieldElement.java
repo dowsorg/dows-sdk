@@ -3,10 +3,13 @@ package org.dows.sdk.spider.elements;
 import lombok.Data;
 import org.dows.sdk.extract.ElementMapping;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 public class FieldElement implements Element {
 
-    private FieldElement name;
+    private Map<String, List<FieldElement>> fields;
     //属性code
     @ElementMapping(channel = "weixin", name = "属性")
     private String code;
