@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.dows.sdk.spider.elements.*;
 import org.dows.sdk.spider.extract.DyOpenExtracter;
 import org.dows.sdk.spider.extract.WxOpenExtracter;
 import org.dows.sdk.spider.extract.WxPayExtracter;
@@ -90,14 +91,26 @@ public class ApiTest {
         String channel1 = "alipay";
         List<TreeNode<String>> treeNodes = new ArrayList<>();
 
-        buildTree(channel, path, treeNodes);
-        buildTree(channel1, path1, treeNodes);
-        buildTree(channel1, path2, treeNodes);
+        Element methodElement = new MethodElement();
+        Element pkgElement = new PkgElement();
+        Element classElement = new ClassElement();
+        Element fieldElement = new FieldElement();
+
+        Map<ElementType, Element> elements = new HashMap<>();
+        elements.put(ElementType.PKG_ELEMENT, pkgElement);
+        elements.put(ElementType.CLASS_ELEMENT, classElement);
+        elements.put(ElementType.METHOD_ELEMENT, methodElement);
+        elements.put(ElementType.FIELD_ELEMENT, fieldElement);
+
+        buildTree(channel, path, treeNodes, elements);
+        buildTree(channel1, path1, treeNodes, elements);
+        buildTree(channel1, path2, treeNodes, elements);
+
         List<Tree<String>> build = TreeUtil.build(treeNodes, "alipay");
         System.out.println(JSONUtil.toJsonPrettyStr(build));
     }
 
-    private static void buildTree(String channel, String path, List<TreeNode<String>> treeNodes) {
+    private static void buildTree(String channel, String path, List<TreeNode<String>> treeNodes, Map<ElementType, ? extends Element> elements) {
         // 构建树（第三方平台管理 /模板库管理 /获取模板列表）
         //String path = "第三方平台管理.模板库管理@获取模板列表";
         String[] paths = path.split("/");
@@ -110,34 +123,40 @@ public class ApiTest {
 //        String channel = "";
 
 //
-        TreeNode<String> treeRoot = new TreeNode();
+        /*TreeNode<String> treeRoot = new TreeNode<>();
         treeRoot.setId(channel);
         treeRoot.setName(channel);
-        //treeRoot.setParentId("");
-        Map<String, Object> rootMap = new HashMap<>();
+        treeRoot.setParentId(null);
+        Map<String, Object> rootMap = elements.get(ElementType.PKG_ELEMENT).toMap();
         rootMap.put("type", "channel");
         treeRoot.setExtra(rootMap);
-        treeNodes.add(treeRoot);
+        treeNodes.add(treeRoot);*/
 
-        String clazzId = UUID.fastUUID().toString();
+
         String methodId = UUID.fastUUID().toString();
+        String clazzId = UUID.fastUUID().toString();
         String pkgId = UUID.fastUUID().toString();
 
-        TreeNode<String> treeMethod = new TreeNode();
+        Map<String, Object> fieldMap = elements.get(ElementType.FIELD_ELEMENT).toMap();
+        // 多个参数
+        reduceField(clazzId, fieldMap, elements, treeNodes);
+
+        TreeNode<String> treeMethod = new TreeNode<>();
         treeMethod.setId(methodId);
         treeMethod.setName(method);
         treeMethod.setParentId(clazzId);
-        Map<String, Object> methodMap = new HashMap<>();
+        Map<String, Object> methodMap = elements.get(ElementType.METHOD_ELEMENT).toMap();
         methodMap.put("type", "method");
         methodMap.put("code", "method");
         treeMethod.setExtra(methodMap);
         treeNodes.add(treeMethod);
 
 
-        TreeNode<String> treeClazz = new TreeNode();
+        TreeNode<String> treeClazz = new TreeNode<>();
         treeClazz.setId(clazzId);
         treeClazz.setName(clazz);
-        Map<String, Object> clazzMap = new HashMap<>();
+
+        Map<String, Object> clazzMap = elements.get(ElementType.CLASS_ELEMENT).toMap();
         clazzMap.put("type", "clazz");
         clazzMap.put("code", "clazz");
         treeClazz.setExtra(clazzMap);
@@ -146,11 +165,11 @@ public class ApiTest {
 
         if (StrUtil.isNotBlank(pkg)) {
 
-            TreeNode<String> treePkg = new TreeNode();
+            TreeNode<String> treePkg = new TreeNode<>();
             treePkg.setName(pkg);
             treePkg.setId(pkgId);
             treePkg.setParentId(channel);
-            Map<String, Object> pkgMap = new HashMap<>();
+            Map<String, Object> pkgMap = elements.get(ElementType.PKG_ELEMENT).toMap();
             pkgMap.put("type", "pkg");
             pkgMap.put("code", "pkg");
             treePkg.setExtra(pkgMap);
@@ -162,6 +181,25 @@ public class ApiTest {
         }
 
 
+    }
+
+    private static void reduceField(String parentId, Map<String, Object> fieldMap,
+                                    Map<ElementType, ? extends Element> elements, List<TreeNode<String>> treeNodes) {
+        fieldMap.forEach((k, v) -> {
+            if (k.equals("name") && v != null) {
+                FieldElement fe = (FieldElement) v;
+                Map<String, Object> map = fe.toMap();
+                reduceField(UUID.fastUUID().toString(), map, elements, treeNodes);
+            }
+            String fieldId = UUID.fastUUID().toString();
+            TreeNode<String> treeField = new TreeNode<>();
+            //treeField.setName("");
+            treeField.setId(fieldId);
+            treeField.setParentId(parentId);
+            Map<String, Object> map = elements.get(ElementType.FIELD_ELEMENT).toMap();
+            treeField.setExtra(map);
+            treeNodes.add(treeField);
+        });
     }
 
 
