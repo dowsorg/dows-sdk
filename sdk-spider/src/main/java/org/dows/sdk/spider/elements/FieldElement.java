@@ -9,7 +9,7 @@ import java.util.Map;
 @Data
 public class FieldElement implements Element {
 
-    private Map<String, List<FieldElement>> fields;
+    private Map<FieldElement, List<FieldElement>> fields;
     //属性code
     @ElementMapping(channel = "weixin", name = "属性")
     private String code;
