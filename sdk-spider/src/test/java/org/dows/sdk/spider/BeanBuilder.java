@@ -47,10 +47,10 @@ public class BeanBuilder {
 //        buildTree(channel1, path2, treeNodes, elements);
 
 
-        List<TreeNode<String>> elementType = treeNodes.stream().filter(tn -> tn.getExtra().get("elementType").toString().equals("0"))
+        /*List<TreeNode<String>> elementType = treeNodes.stream().filter(tn -> tn.getExtra().get("elementType").toString().equals("0"))
                 .toList();
         List<Tree<String>> build1 = TreeUtil.build(elementType, "4891509c-2b5f-431d-9013-e832e41371ef");
-        System.out.println(JSONUtil.toJsonPrettyStr(build1));
+        System.out.println(JSONUtil.toJsonPrettyStr(build1));*/
 
         List<Tree<String>> build = TreeUtil.build(treeNodes, "appa");
         System.out.println(JSONUtil.toJsonPrettyStr(build));
@@ -115,14 +115,12 @@ public class BeanBuilder {
                                   Map<ElementType, ? extends Element> elements) {
         // 构建树（第三方平台管理 /模板库管理 /获取模板列表）
         //String path = "第三方平台管理.模板库管理@获取模板列表";
-        String[] paths = path.split("/");
         int methodIndex = path.lastIndexOf("@");
         int classIndex = path.lastIndexOf(".");
 
         String method = path.substring(methodIndex + 1);
         String clazz = path.substring(classIndex + 1, methodIndex);
         String pkg = path.substring(0, classIndex);
-//        String channel = "";
 
 //
         /*TreeNode<String> treeRoot = new TreeNode<>();
@@ -139,11 +137,10 @@ public class BeanBuilder {
         String clazzId = UUID.fastUUID().toString();
         String pkgId = UUID.fastUUID().toString();
 
-        FieldElement element = (FieldElement) elements.get(ElementType.FIELD_ELEMENT);
-        element.setPkg(pkg);
-//        Map<String, Object> fieldMap = (Map<String, Object>) element;
+        FieldElement fieldElement = (FieldElement) elements.get(ElementType.FIELD_ELEMENT);
+        fieldElement.setPkg(pkg);
         // 多个参数
-        reduceField(pkg, methodId, element, treeNodes);
+        reduceField(pkg, methodId, fieldElement, treeNodes);
 
         TreeNode<String> treeMethod = new TreeNode<>();
         treeMethod.setId(methodId);
@@ -159,7 +156,6 @@ public class BeanBuilder {
 
         TreeNode<String> treeClazz = new TreeNode<>();
         treeClazz.setId(clazzId);
-
         ClassElement classElement = (ClassElement) elements.get(ElementType.CLASS_ELEMENT);
         classElement.setCode(clazz);
         classElement.setPgk(pkg + ".api");
@@ -167,9 +163,7 @@ public class BeanBuilder {
         treeClazz.setExtra(classElement.toMap());
         treeNodes.add(treeClazz);
 
-
         if (StrUtil.isNotBlank(pkg)) {
-
             TreeNode<String> treePkg = new TreeNode<>();
             treePkg.setName(pkg);
             treePkg.setId(pkgId);
@@ -184,8 +178,6 @@ public class BeanBuilder {
         } else {
             treeClazz.setParentId(channel);
         }
-
-
     }
 
     private static void reduceField(String pkg, String parentId, FieldElement element, List<TreeNode<String>> treeNodes) {
