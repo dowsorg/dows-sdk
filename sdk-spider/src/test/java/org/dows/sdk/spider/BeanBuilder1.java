@@ -145,7 +145,7 @@ public class BeanBuilder1 {
 
         MethodElement methodElement = (MethodElement) elements.get(ElementType.METHOD_ELEMENT);
 //        methodElement.setInputs();
-        methodElement.setOutput(fieldElement);
+        //methodElement.setOutput(fieldElement);
         Map<String, Object> map = methodElement.toMap(methodElement.methodFields());
         map.put("inputs",fieldElement);
 //        map.put("output",fieldTreeNodes);

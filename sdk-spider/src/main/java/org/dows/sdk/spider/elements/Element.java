@@ -2,7 +2,9 @@ package org.dows.sdk.spider.elements;
 
 import cn.hutool.core.bean.BeanUtil;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description: </br>
@@ -15,11 +17,11 @@ import java.util.Map;
 public interface Element {
 
     default String[] fieldFields() {
-        return new String[]{"code", "type", "descr", "required", "def", "index", "io", "elementType", "collectionType"};
+        return new String[]{"code", "type", "descr", "required", "def", "index", "io", "elementType", "pkg", "collectionType"};
     }
 
     default String[] methodFields() {
-        return new String[]{"methodCode","methodName","methodDescr","methodUrl","httpMethod","index","elementType"};
+        return new String[]{"methodCode", "methodName", "methodDescr", "methodUrl", "httpMethod", "index", "elementType"};
     }
 
     Integer getElementType();
@@ -30,6 +32,12 @@ public interface Element {
      * @return
      */
     default Map<String, Object> toMap(String... properties) {
-        return BeanUtil.beanToMap(this, properties);
+        Map<String, Object> map = BeanUtil.beanToMap(this, properties);
+
+        return map.entrySet().stream()
+                .filter(o -> o.getValue() != null)
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 }

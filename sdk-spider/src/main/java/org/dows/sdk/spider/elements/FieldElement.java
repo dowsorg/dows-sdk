@@ -26,6 +26,8 @@ public class FieldElement implements Element {
     @ElementMapping(channel = "weixin", name = "默认值")
     private String def;
     // "code","type","descr","required","def","index","io","collectionType"
+    // pkg
+    private String pkg;
     // 顺序
     private int index;
     // 输入输出[0:input, 1:output]

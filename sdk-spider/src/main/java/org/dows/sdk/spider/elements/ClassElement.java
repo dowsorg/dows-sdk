@@ -12,7 +12,12 @@ import lombok.Data;
  */
 @Data
 public class ClassElement implements Element {
-    private Integer elementType = 2;
-
+    private final Integer elementType = 2;
+    private String pgk;
+    private String name;
+    private String code;
+    private String descr;
+    // 顺序
+    private int index;
 }
 

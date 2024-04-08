@@ -12,17 +12,17 @@ public class MethodElement implements Element {
     @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::*[1]/text()")
     @Extract(channel = "alipay", xpath = "")
     @Extract(channel = "douyin", xpath = "")
-    private String methodCode;
+    private String code;
     // 方法名
     @Extract(channel = "alipay", xpath = "")
     @Extract(channel = "douyin", xpath = "")
     @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h1/text()")
-    private String methodName;
+    private String name;
     // 方法描述
     @Extract(channel = "alipay", xpath = "")
     @Extract(channel = "douyin", xpath = "")
     @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='功能描述']/following-sibling::*[1]/text()")
-    private String methodDescr;
+    private String descr;
 
     // 方法接口地址
     @Extract(channel = "alipay", xpath = "")
@@ -41,7 +41,7 @@ public class MethodElement implements Element {
     private int index;
 
     private Integer elementType = 1;
-    private List<FieldElement> inputs;
-    private FieldElement output;
+/*    private List<FieldElement> inputs;
+    private FieldElement output;*/
 
 }

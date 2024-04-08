@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * @description: </br>
@@ -67,6 +66,7 @@ public class BeanBuilder {
         fieldElement.setCode("aaa");
         fieldElement.setDescr("aaa");
         fieldElement.setIndex(0);
+        //fieldElement.setIo(1);
         // 默认入参
         //fieldElement.setIo(0);
 
@@ -111,7 +111,8 @@ public class BeanBuilder {
         return fieldElement;
     }
 
-    private static void buildTree(String channel, String path, List<TreeNode<String>> treeNodes, Map<ElementType, ? extends Element> elements) {
+    private static void buildTree(String channel, String path, List<TreeNode<String>> treeNodes,
+                                  Map<ElementType, ? extends Element> elements) {
         // 构建树（第三方平台管理 /模板库管理 /获取模板列表）
         //String path = "第三方平台管理.模板库管理@获取模板列表";
         String[] paths = path.split("/");
@@ -139,30 +140,31 @@ public class BeanBuilder {
         String pkgId = UUID.fastUUID().toString();
 
         FieldElement element = (FieldElement) elements.get(ElementType.FIELD_ELEMENT);
+        element.setPkg(pkg);
 //        Map<String, Object> fieldMap = (Map<String, Object>) element;
         // 多个参数
-        reduceField(methodId, element, treeNodes);
+        reduceField(pkg, methodId, element, treeNodes);
 
         TreeNode<String> treeMethod = new TreeNode<>();
         treeMethod.setId(methodId);
         treeMethod.setName(method);
         treeMethod.setParentId(clazzId);
-        Map<String, Object> methodMap = elements.get(ElementType.METHOD_ELEMENT).toMap();
 
-        methodMap.put("type", "method");
-        methodMap.put("code", "method");
-        treeMethod.setExtra(methodMap);
+        MethodElement methodElement = (MethodElement) elements.get(ElementType.METHOD_ELEMENT);
+        methodElement.setCode("${method}");
+        methodElement.setDescr("${method descr}");
+        treeMethod.setExtra(methodElement.toMap());
         treeNodes.add(treeMethod);
 
 
         TreeNode<String> treeClazz = new TreeNode<>();
         treeClazz.setId(clazzId);
-        treeClazz.setName(clazz);
 
-        Map<String, Object> clazzMap = elements.get(ElementType.CLASS_ELEMENT).toMap();
-        clazzMap.put("type", "clazz");
-        clazzMap.put("code", "clazz");
-        treeClazz.setExtra(clazzMap);
+        ClassElement classElement = (ClassElement) elements.get(ElementType.CLASS_ELEMENT);
+        classElement.setCode(clazz);
+        classElement.setPgk(pkg + ".api");
+        classElement.setDescr("class descr");
+        treeClazz.setExtra(classElement.toMap());
         treeNodes.add(treeClazz);
 
 
@@ -186,8 +188,15 @@ public class BeanBuilder {
 
     }
 
-    private static void reduceField(String parentId, FieldElement element, List<TreeNode<String>> treeNodes) {
+    private static void reduceField(String pkg, String parentId, FieldElement element, List<TreeNode<String>> treeNodes) {
 
+        if (element.getType().equalsIgnoreCase("object")) {
+            if (element.getIo() == 0) {
+                element.setPkg(pkg + ".request");
+            } else {
+                element.setPkg(pkg + ".response");
+            }
+        }
         Map<String, Object> map = element.toMap(element.fieldFields());
         TreeNode<String> node = new TreeNode<>();
         node.setExtra(map);
@@ -195,11 +204,11 @@ public class BeanBuilder {
         node.setParentId(parentId);
         node.setName(element.getCode());
         treeNodes.add(node);
-
+        // 递归字段
         List<FieldElement> fields = element.getFields();
         if (fields != null && !fields.isEmpty()) {
             for (FieldElement field : fields) {
-                reduceField(node.getId(), field, treeNodes);
+                reduceField(pkg, node.getId(), field, treeNodes);
             }
         }
     }
