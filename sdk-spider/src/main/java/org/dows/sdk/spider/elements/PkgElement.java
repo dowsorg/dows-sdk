@@ -13,6 +13,7 @@ import lombok.Data;
 @Data
 public class PkgElement implements Element {
     private Integer elementType = 3;
-
+    private String pgk;
+    private String descr;
 }
 

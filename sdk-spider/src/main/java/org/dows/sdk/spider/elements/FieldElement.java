@@ -35,7 +35,7 @@ public class FieldElement implements Element {
     // 元素类型
     private Integer elementType = 0;
     // 集合类型[0:List,1:Set,2:map,3:array]
-    private Integer collectionType;
+    private String collectionType;
 
 
 }

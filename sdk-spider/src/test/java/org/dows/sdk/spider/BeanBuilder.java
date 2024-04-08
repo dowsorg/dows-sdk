@@ -159,19 +159,21 @@ public class BeanBuilder {
         ClassElement classElement = (ClassElement) elements.get(ElementType.CLASS_ELEMENT);
         classElement.setCode(clazz);
         classElement.setPgk(pkg + ".api");
-        classElement.setDescr("class descr");
+        classElement.setDescr("${classDescr}");
         treeClazz.setExtra(classElement.toMap());
         treeNodes.add(treeClazz);
 
         if (StrUtil.isNotBlank(pkg)) {
             TreeNode<String> treePkg = new TreeNode<>();
-            treePkg.setName(pkg);
+            /*treePkg.setName(pkg);*/
             treePkg.setId(pkgId);
             treePkg.setParentId(channel);
-            Map<String, Object> pkgMap = elements.get(ElementType.PKG_ELEMENT).toMap();
-            pkgMap.put("type", "pkg");
-            pkgMap.put("code", "pkg");
-            treePkg.setExtra(pkgMap);
+            PkgElement pkgElement = (PkgElement) elements.get(ElementType.PKG_ELEMENT);
+            pkgElement.setPgk(pkg);
+            pkgElement.setDescr("${pkgDescr}");
+           /* pkgMap.put("type", "pkg");
+            pkgMap.put("code", "pkg");*/
+            treePkg.setExtra(pkgElement.toMap());
             treeNodes.add(treePkg);
 
             treeClazz.setParentId(pkgId);
