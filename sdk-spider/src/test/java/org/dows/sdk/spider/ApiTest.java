@@ -240,7 +240,7 @@ public class ApiTest {
 
     private static void reduceField(String parentId, FieldElement element, List<TreeNode<String>> treeNodes) {
 
-        Map<String, Object> map = element.toMap(element.selectFields());
+        Map<String, Object> map = element.toMap(element.fieldFields());
         TreeNode<String> node = new TreeNode<>();
         node.setExtra(map);
         node.setId(UUID.fastUUID().toString());

@@ -36,15 +36,12 @@ public class MethodElement implements Element {
     @Extract(channel = "weixin", xpath = "//div[@class='language- extra-class']//code/text()")
     private String httpMethod;
 
+    //"methodCode","methodName","methodDescr","methodUrl","httpMethod","index","",""
     // 顺序
     private int index;
 
+    private Integer elementType = 1;
     private List<FieldElement> inputs;
     private FieldElement output;
 
-
-    @Override
-    public Integer getElementType() {
-        return 0;
-    }
 }

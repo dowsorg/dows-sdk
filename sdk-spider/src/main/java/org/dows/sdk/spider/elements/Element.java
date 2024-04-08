@@ -14,8 +14,12 @@ import java.util.Map;
  */
 public interface Element {
 
-    default String[] selectFields() {
+    default String[] fieldFields() {
         return new String[]{"code", "type", "descr", "required", "def", "index", "io", "elementType", "collectionType"};
+    }
+
+    default String[] methodFields() {
+        return new String[]{"methodCode","methodName","methodDescr","methodUrl","httpMethod","index","elementType"};
     }
 
     Integer getElementType();

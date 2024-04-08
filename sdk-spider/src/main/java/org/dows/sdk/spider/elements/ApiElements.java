@@ -58,6 +58,7 @@ public class ApiElements {
     @Extract(channel = "weixin", xpath = "//div[@class='language- extra-class']//code/text()")
     private String httpMethod;
 
+/*
 
     // 入参
     @Extract(channel = "alipay", xpath = "")
@@ -69,5 +70,6 @@ public class ApiElements {
     @Extract(channel = "douyin", xpath = "")
     @Extract(channel = "weixin", xpath = "//h3[@id='返回参数']/following-sibling::div[1]/table//tr")
     private List<ParamElements> outputs;
+*/
 
 }

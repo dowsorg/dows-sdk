@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * @description: </br>
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
  * <author>      <time>      <version>    <desc>
  * 修改人姓名      修改时间        版本号       描述
  */
-public class BeanBuilder {
+public class BeanBuilder1 {
 
     public static void main(String[] args) {
         String path = "org.dows.uat.AccountApi@dddd";
@@ -46,12 +45,6 @@ public class BeanBuilder {
         buildTree(channel, path, treeNodes, elements);
 //        buildTree(channel1, path1, treeNodes, elements);
 //        buildTree(channel1, path2, treeNodes, elements);
-
-
-        List<TreeNode<String>> elementType = treeNodes.stream().filter(tn -> tn.getExtra().get("elementType").toString().equals("0"))
-                .toList();
-        List<Tree<String>> build1 = TreeUtil.build(elementType, "4891509c-2b5f-431d-9013-e832e41371ef");
-        System.out.println(JSONUtil.toJsonPrettyStr(build1));
 
         List<Tree<String>> build = TreeUtil.build(treeNodes, "appa");
         System.out.println(JSONUtil.toJsonPrettyStr(build));
@@ -138,20 +131,25 @@ public class BeanBuilder {
         String clazzId = UUID.fastUUID().toString();
         String pkgId = UUID.fastUUID().toString();
 
-        FieldElement element = (FieldElement) elements.get(ElementType.FIELD_ELEMENT);
+        FieldElement fieldElement = (FieldElement) elements.get(ElementType.FIELD_ELEMENT);
 //        Map<String, Object> fieldMap = (Map<String, Object>) element;
         // 多个参数
-        reduceField(methodId, element, treeNodes);
+        List<TreeNode<String>> fieldTreeNodes = new ArrayList<>();
+        reduceField(methodId, fieldElement, fieldTreeNodes);
 
         TreeNode<String> treeMethod = new TreeNode<>();
         treeMethod.setId(methodId);
         treeMethod.setName(method);
         treeMethod.setParentId(clazzId);
-        Map<String, Object> methodMap = elements.get(ElementType.METHOD_ELEMENT).toMap();
+//        Map<String, Object> methodMap = elements.get(ElementType.METHOD_ELEMENT).toMap();
 
-        methodMap.put("type", "method");
-        methodMap.put("code", "method");
-        treeMethod.setExtra(methodMap);
+        MethodElement methodElement = (MethodElement) elements.get(ElementType.METHOD_ELEMENT);
+//        methodElement.setInputs();
+        methodElement.setOutput(fieldElement);
+        Map<String, Object> map = methodElement.toMap(methodElement.methodFields());
+        map.put("inputs",fieldElement);
+//        map.put("output",fieldTreeNodes);
+        treeMethod.setExtra(map);
         treeNodes.add(treeMethod);
 
 
