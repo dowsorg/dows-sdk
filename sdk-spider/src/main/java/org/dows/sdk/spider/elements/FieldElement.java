@@ -4,12 +4,12 @@ import lombok.Data;
 import org.dows.sdk.extract.ElementMapping;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class FieldElement implements Element {
 
-    private Map<FieldElement, List<FieldElement>> fields;
+    //private Map<FieldElement, List<FieldElement>> fields;
+    private List<FieldElement> fields;
     //属性code
     @ElementMapping(channel = "weixin", name = "属性")
     private String code;
@@ -25,4 +25,12 @@ public class FieldElement implements Element {
     // 默认值
     @ElementMapping(channel = "weixin", name = "默认值")
     private String def;
+    // "code","type","descr","required","def","index","io","collectionType"
+    // 顺序
+    private int index;
+    // 输入输出[0:input, 1:output]
+    private int io;
+    // 集合类型[0:List,1:Set,2:map,3:array]
+    private int collectionType;
+
 }

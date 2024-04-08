@@ -14,6 +14,10 @@ import java.util.Map;
  */
 public interface Element {
 
+    default String[] selectFields() {
+        return new String[]{"code", "type", "descr", "required", "def", "index", "io", "collectionType"};
+    }
+
     /**
      * 将元素转换为map
      *
