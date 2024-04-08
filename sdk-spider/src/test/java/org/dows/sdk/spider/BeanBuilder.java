@@ -1,5 +1,6 @@
 package org.dows.sdk.spider;
 
+import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
@@ -8,7 +9,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import org.dows.sdk.spider.elements.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,8 +26,19 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BeanBuilder {
 
+    private static final Map<String, Object> map = new HashMap<>();
+
+    static {
+        try {
+            map.putAll(JsonReader.readJsonFile(new ClassPathResource("name.json").getStream()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public static void main(String[] args) {
-        String path = "org.dows.uat.AccountApi@dddd";
+        String path = "第三方平台管理.模板库管理@dddd";
         String path1 = "第三方平台管理.模板库管理@获取模板列表1";
         String path2 = "第三方平台管理.模板库管理@获取模板列表2";
         String channel = "appa";
@@ -122,7 +136,20 @@ public class BeanBuilder {
         String clazz = path.substring(classIndex + 1, methodIndex);
         String pkg = path.substring(0, classIndex);
 
-//
+        // 替换中文
+        String[] pkgItems = pkg.split("\\.");
+        for (String item : pkgItems) {
+            Object o = map.get(item);
+            if (o != null) {
+                pkg = pkg.replace(item, o.toString());
+            }
+        }
+        Object co = map.get(clazz);
+        if (co != null) {
+            clazz = co.toString();
+        }
+        
+
         /*TreeNode<String> treeRoot = new TreeNode<>();
         treeRoot.setId(channel);
         treeRoot.setName(channel);
