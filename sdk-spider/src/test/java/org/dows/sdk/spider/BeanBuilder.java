@@ -7,13 +7,20 @@ import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
 import org.dows.sdk.spider.elements.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.seimicrawler.xpath.JXDocument;
+import org.seimicrawler.xpath.JXNode;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -43,6 +50,40 @@ public class BeanBuilder {
         String path2 = "第三方平台管理.模板库管理@获取模板列表2";
         String channel = "appa";
         String channel1 = "appb";
+
+        String host = "https://developers.weixin.qq.com";
+        String prefix = "/doc/oplatform/openApi/OpenApiDoc/";
+        String urlXpath = "//aside[@class='sidebar']/div/div/ul/li//a";
+        JXDocument jxDocument = JXDocument.create(getDocument("https://developers.weixin.qq.com/doc/oplatform/openApi/OpenApiDoc"));
+        List<JXNode> jxNodes = jxDocument.selN(urlXpath);
+        Map<String, String> map = new TreeMap<>();
+        jxNodes.forEach(n -> {
+
+            String uri = n.selOne("@href").asString();
+
+            String pcmPath = uri.replace(prefix, "").replace(".html", "");
+            int methodStart = pcmPath.lastIndexOf("/");
+            String method = pcmPath.substring(methodStart + 1);
+
+            String classPath = pcmPath.substring(0, methodStart);
+            int classStart = classPath.lastIndexOf("/");
+            String clazz = classPath.substring(classStart + 1);
+            clazz = StrUtil.toCamelCase(clazz, '-');
+
+            String key;
+            if (classStart == -1) {
+                key = clazz + "@" + method;
+            } else {
+                String pkg = pcmPath.substring(0, classStart);
+                key = pkg + "/" + clazz + "@" + method;
+            }
+            String targetUrl = host + uri;
+            map.put(key, targetUrl);
+
+            //System.out.println(n.selOne("@href").asString());
+        });
+        System.out.println(JSONUtil.toJsonPrettyStr(map));
+
         List<TreeNode<String>> treeNodes = new ArrayList<>();
 
         MethodElement methodElement = new MethodElement();
@@ -232,6 +273,58 @@ public class BeanBuilder {
                 reduceField(pkg, node.getId(), field, treeNodes);
             }
         }
+    }
+
+    public static Document getDocument(String seed) {
+        Document document = null;
+        if (seed.startsWith("http://") || seed.startsWith("https://")) {
+
+            /** 创建模拟指定浏览器的客户端对象 */
+            final WebClient webClient = new WebClient(BrowserVersion.EDGE);
+
+            /** JS执行出错不抛出异常 */
+            webClient.getOptions().setThrowExceptionOnScriptError(false);
+            /** HTTP状态不是200时不抛出异常 */
+            webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+            /** 不启用CSS */
+            webClient.getOptions().setCssEnabled(false);
+            /** 启用JS(非常重要) */
+            webClient.getOptions().setJavaScriptEnabled(true);
+            // webClient.getOptions().setActiveXNative(false);
+            //webClient.getOptions().setTimeout(3000);
+            /** 支持AJAX(非常重要) */
+            webClient.setAjaxController(new NicelyResynchronizingAjaxController());
+            webClient.setJavaScriptErrorListener(new SilentJavaScriptErrorListener());
+            /** JS执行需要一定时间，设置等待时间(非常重要) */
+            webClient.waitForBackgroundJavaScript(3000);
+
+
+            /** 加载网页 */
+            HtmlPage page = null;
+            try {
+                page = webClient.getPage(seed);
+                //Thread.sleep(3000);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            /** 将加载的网页转换成XML形式 */
+            String pageXml = page.asXml();
+            /** Jsoup获取HTML文档 */
+            document = Jsoup.parse(pageXml);
+            webClient.close();
+        } else if (seed.startsWith("file://")) {
+            try {
+                document = Jsoup.parse(new File(seed.substring("file://".length())));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (seed.startsWith("classpath://")) {
+            ClassPathResource classPathResource = new ClassPathResource(seed.substring("classpath://".length()));
+            document = Jsoup.parse(classPathResource.readUtf8Str());
+        } else {
+            document = Jsoup.parse(seed);
+        }
+        return document;
     }
 }
 

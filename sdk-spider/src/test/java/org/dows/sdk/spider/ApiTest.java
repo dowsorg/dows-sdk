@@ -70,6 +70,7 @@ public class ApiTest {
 
     @Test
     public void testWxOpen() {
+        //https://developers.weixin.qq.com/
         String seed = "https://developers.weixin.qq.com/doc/oplatform/openApi/OpenApiDoc";
         //String regex = "//div[@class='TreeNavigation']/div/ul/li/div/ul//li/span/a";
         // //div[@class='TreeNavigation']/div/ul/li/div//ul/li
