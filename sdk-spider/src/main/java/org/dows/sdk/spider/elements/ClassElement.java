@@ -12,5 +12,9 @@ import lombok.Data;
  */
 @Data
 public class ClassElement implements Element {
+    @Override
+    public Integer getElementType() {
+        return 0;
+    }
 }
 

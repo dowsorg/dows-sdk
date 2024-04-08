@@ -30,7 +30,10 @@ public class FieldElement implements Element {
     private int index;
     // 输入输出[0:input, 1:output]
     private int io;
+    // 元素类型
+    private Integer elementType = 0;
     // 集合类型[0:List,1:Set,2:map,3:array]
-    private int collectionType;
+    private Integer collectionType;
+
 
 }
