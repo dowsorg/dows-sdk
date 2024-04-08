@@ -21,6 +21,7 @@ import org.seimicrawler.xpath.JXNode;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @description: </br>
@@ -30,7 +31,7 @@ import java.util.*;
  * <author>      <time>      <version>    <desc>
  * 修改人姓名      修改时间        版本号       描述
  */
-public class BeanBuilder {
+public class BeanBuilder2 {
 
     private static final Map<String, Object> map = new HashMap<>();
 
@@ -44,12 +45,48 @@ public class BeanBuilder {
 
 
     public static void main(String[] args) {
+        String path = "第三方平台管理.模板库管理@dddd";
+        String path1 = "第三方平台管理.模板库管理@获取模板列表1";
+        String path2 = "第三方平台管理.模板库管理@获取模板列表2";
+        String channel = "appa";
+        String channel1 = "appb";
 
-        String channel = "weixin";
-        Map<String, String> uriMap = extractedUri(channel);
+        String host = "https://developers.weixin.qq.com";
+        String prefix = "/doc/oplatform/openApi/OpenApiDoc/";
+        String urlXpath = "//aside[@class='sidebar']/div/div/ul/li//a";
+        JXDocument jxDocument = JXDocument.create(getDocument("https://developers.weixin.qq.com/doc/oplatform/openApi/OpenApiDoc"));
+        List<JXNode> jxNodes = jxDocument.selN(urlXpath);
+        Map<String, String> map = new TreeMap<>();
+        jxNodes.forEach(n -> {
+
+            String uri = n.selOne("@href").asString();
+
+            String pcmPath = uri.replace(prefix, "").replace(".html", "");
+            int methodStart = pcmPath.lastIndexOf("/");
+            String method = pcmPath.substring(methodStart + 1);
+
+            String classPath = pcmPath.substring(0, methodStart);
+            int classStart = classPath.lastIndexOf("/");
+            String clazz = classPath.substring(classStart + 1);
+            clazz = StrUtil.toCamelCase(clazz, '-');
+
+            String key;
+            if (classStart == -1) {
+                key = clazz + "@" + method;
+            } else {
+                String pkg = pcmPath.substring(0, classStart);
+                key = pkg + "/" + clazz + "@" + method;
+            }
+            String targetUrl = host + uri;
+            map.put(key, targetUrl);
+
+            //System.out.println(n.selOne("@href").asString());
+        });
+        System.out.println(JSONUtil.toJsonPrettyStr(map));
+
         List<TreeNode<String>> treeNodes = new ArrayList<>();
 
-/*        MethodElement methodElement = new MethodElement();
+        MethodElement methodElement = new MethodElement();
         PkgElement pkgElement = new PkgElement();
         ClassElement classElement = new ClassElement();
         FieldElement fieldElement = getFieldElement();
@@ -58,10 +95,9 @@ public class BeanBuilder {
         elements.put(ElementType.PKG_ELEMENT, pkgElement);
         elements.put(ElementType.CLASS_ELEMENT, classElement);
         elements.put(ElementType.METHOD_ELEMENT, methodElement);
-        elements.put(ElementType.FIELD_ELEMENT, fieldElement);*/
-        /*uriMap.forEach((pk, url) -> {
-            buildTree(channel, pk, treeNodes, elements);
-        });*/
+        elements.put(ElementType.FIELD_ELEMENT, fieldElement);
+
+        buildTree(channel, path, treeNodes, elements);
 //        buildTree(channel1, path1, treeNodes, elements);
 //        buildTree(channel1, path2, treeNodes, elements);
 
@@ -73,43 +109,6 @@ public class BeanBuilder {
 
         List<Tree<String>> build = TreeUtil.build(treeNodes, "appa");
         System.out.println(JSONUtil.toJsonPrettyStr(build));
-    }
-
-    private static Map<String, String> extractedUri(String channel) {
-        if (channel.equalsIgnoreCase("weixin")) {
-            String host = "https://developers.weixin.qq.com";
-            String prefix = "/doc/oplatform/openApi/OpenApiDoc/";
-            String urlXpath = "//aside[@class='sidebar']/div/div/ul/li//a";
-            JXDocument jxDocument = JXDocument.create(getDocument("https://developers.weixin.qq.com/doc/oplatform/openApi/OpenApiDoc"));
-            List<JXNode> jxNodes = jxDocument.selN(urlXpath);
-            Map<String, String> map = new TreeMap<>();
-            jxNodes.forEach(n -> {
-
-                String uri = n.selOne("@href").asString();
-
-                String pcmPath = uri.replace(prefix, "").replace(".html", "");
-                int methodStart = pcmPath.lastIndexOf("/");
-                String method = pcmPath.substring(methodStart + 1);
-
-                String classPath = pcmPath.substring(0, methodStart);
-                int classStart = classPath.lastIndexOf("/");
-                String clazz = classPath.substring(classStart + 1);
-                clazz = StrUtil.toCamelCase(clazz, '-');
-
-                String key;
-                if (classStart == -1) {
-                    key = clazz + "@" + method;
-                } else {
-                    String pkg = pcmPath.substring(0, classStart);
-                    key = pkg + "/" + clazz + "@" + method;
-                }
-                String targetUrl = host + uri;
-                map.put(key, targetUrl);
-            });
-            System.out.println(JSONUtil.toJsonPrettyStr(map));
-            return map;
-        }
-        return null;
     }
 
     private static FieldElement getFieldElement() {
