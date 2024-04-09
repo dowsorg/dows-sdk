@@ -6,8 +6,7 @@ import org.dows.sdk.extract.Extract;
 
 import java.util.List;
 
-@Extract(channel = "weixin",  xpath = "//h3[@id='请求参数']/following-sibling::div[1]/table//tr")
-@Extract(channel = "weixin", xpath = "//h3[@id='返回参数']/following-sibling::div[1]/table//tr")
+
 @Data
 public class FieldElement implements Element {
 

@@ -2,6 +2,9 @@ package org.dows.sdk.spider.elements;
 
 import lombok.Data;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @description: </br>
  * @author: lait.zhang@gmail.com
@@ -19,5 +22,9 @@ public class ClassElement implements Element {
     private String descr;
     // 顺序
     private int index;
+
+    private Map<String, List<FieldElement>> fields;
+
+    private Map<String,MethodElement> methods;
 }
 

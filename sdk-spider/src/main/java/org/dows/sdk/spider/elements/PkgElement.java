@@ -2,6 +2,8 @@ package org.dows.sdk.spider.elements;
 
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * @description: </br>
  * @author: lait.zhang@gmail.com
@@ -13,7 +15,10 @@ import lombok.Data;
 @Data
 public class PkgElement implements Element {
     private Integer elementType = 3;
+
     private String pgk;
     private String descr;
+    // 类
+    private Map<String, ClassElement> classes;
 }
 

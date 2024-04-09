@@ -63,7 +63,7 @@ public class BeanBuilder {
         String method = path.substring(methodIndex + 1);
         String clazz = path.substring(classIndex + 1, methodIndex);
         String pkg = "";
-        if(classIndex != -1){
+        if (classIndex != -1) {
             pkg = path.substring(0, classIndex);
         }
 
@@ -89,20 +89,22 @@ public class BeanBuilder {
 
         String xpath = "//h3[@id='请求参数']/following-sibling::div[1]/table//tr";
         List<JXNode> jxNodes = jxDocument.selN(xpath);
-        for (JXNode jxNode : jxNodes) {
-            try {
-                String code = jxNode.selOne("./td[2]/code").asString();
-                String descr = jxNode.selOne("./td[3]").asString();
-                int index = Integer.parseInt(jxNode.selOne("./td[4]").asString());
-                int io = Integer.parseInt(jxNode.selOne("./td[5]").asString());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+        if (jxNodes.size() > 1) {
+            for (JXNode jxNode : jxNodes) {
+                try {
+                    String code = jxNode.selOne("./td[2]/code").asString();
+                    String descr = jxNode.selOne("./td[3]").asString();
+                    int index = Integer.parseInt(jxNode.selOne("./td[4]").asString());
+                    int io = Integer.parseInt(jxNode.selOne("./td[5]").asString());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                //FieldElement fieldElement1 = new FieldElement(type, code, descr, index, io);
             }
-            //FieldElement fieldElement1 = new FieldElement(type, code, descr, index, io);
         }
         //fieldElement.setPkg(pkg);
         // 多个参数
-        reduceField(pkg, methodId, fieldElement, treeNodes);
+        //reduceField(pkg, methodId, fieldElement, treeNodes);
 
 
         //FieldElement fieldElement = buildFieldElement(treeNodes, pkg, methodId);
@@ -227,7 +229,7 @@ public class BeanBuilder {
                     key = clazz + "@" + method;
                 } else {
                     String pkg = pcmPath.substring(0, classStart);
-                    key = pkg.replace("/",".") + "." + clazz + "@" + method;
+                    key = pkg.replace("/", ".") + "." + clazz + "@" + method;
                 }
                 String targetUrl = host + uri;
                 map.put(key, targetUrl);

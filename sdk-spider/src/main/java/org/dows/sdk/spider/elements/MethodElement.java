@@ -4,6 +4,7 @@ import lombok.Data;
 import org.dows.sdk.extract.Extract;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class MethodElement implements Element {
@@ -36,12 +37,13 @@ public class MethodElement implements Element {
     @Extract(channel = "weixin", xpath = "//div[@class='language- extra-class']//code/text()")
     private String httpMethod;
 
-    //"methodCode","methodName","methodDescr","methodUrl","httpMethod","index","",""
+    @Extract(channel = "weixin",  xpath = "//h3[@id='请求参数']/following-sibling::div[1]/table//tr")
+    private Map<String,List<FieldElement>> input;
+    @Extract(channel = "weixin", xpath = "//h3[@id='返回参数']/following-sibling::div[1]/table//tr")
+    private Map<String,List<FieldElement>> output;
+
     // 顺序
     private int index;
-
+    // 元素类型[1:方法]
     private Integer elementType = 1;
-/*    private List<FieldElement> inputs;
-    private FieldElement output;*/
-
 }
