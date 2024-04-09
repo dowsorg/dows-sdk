@@ -6,17 +6,22 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
+import org.dows.sdk.extract.Extract;
+import org.dows.sdk.extract.ExtractHandler;
+import org.dows.sdk.extract.ExtractPojo;
 import org.dows.sdk.spider.elements.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.seimicrawler.xpath.JXDocument;
 import org.seimicrawler.xpath.JXNode;
+import org.springframework.context.ApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,9 +88,20 @@ public class BeanBuilder {
         String methodId = UUID.fastUUID().toString();
         String clazzId = UUID.fastUUID().toString();
         String pkgId = UUID.fastUUID().toString();
+        ApplicationContext applicationContext = SpringUtil.getApplicationContext();
+
+        JXDocument jxDocument = JXDocument.create(getDocument(url));
+
+        MethodElement methodElement = new MethodElement();
+        List<ExtractPojo> extractPojos = methodElement.getXpath(channel);
+        for (ExtractPojo extractPojo : extractPojos) {
+            Extract extract = extractPojo.getExtract();
+            ExtractHandler extractHandler = applicationContext.getBean(extract.handler());
+            extractHandler.handle(jxDocument, extractPojo);
+        }
 
         FieldElement fieldElement = new FieldElement();
-        JXDocument jxDocument = JXDocument.create(getDocument(url));
+
 
         String xpath = "//h3[@id='请求参数']/following-sibling::div[1]/table//tr";
         List<JXNode> jxNodes = jxDocument.selN(xpath);

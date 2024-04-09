@@ -24,8 +24,8 @@ public @interface Extract {
 
     String link() default "";
 
-    //Class<? extends ExtractHandler> handler() default ExtractHandler.class;
-    String handler() default "";
+    Class<? extends ExtractHandler> handler() default ExtractHandler.class;
+   //String handler() default "";
 
 
 }
