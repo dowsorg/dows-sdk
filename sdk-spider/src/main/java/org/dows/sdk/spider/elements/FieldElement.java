@@ -2,9 +2,12 @@ package org.dows.sdk.spider.elements;
 
 import lombok.Data;
 import org.dows.sdk.extract.ElementMapping;
+import org.dows.sdk.extract.Extract;
 
 import java.util.List;
 
+@Extract(channel = "weixin",  xpath = "//h3[@id='请求参数']/following-sibling::div[1]/table//tr")
+@Extract(channel = "weixin", xpath = "//h3[@id='返回参数']/following-sibling::div[1]/table//tr")
 @Data
 public class FieldElement implements Element {
 
@@ -36,6 +39,12 @@ public class FieldElement implements Element {
     private Integer elementType = 0;
     // 集合类型[0:List,1:Set,2:map,3:array]
     private String collectionType;
+
+
+    public String getRootXpath() {
+        Extract extract = this.getClass().getAnnotation(Extract.class);
+        return extract.xpath();
+    }
 
 
 }

@@ -44,126 +44,76 @@ public class BeanBuilder {
 
 
     public static void main(String[] args) {
-
         String channel = "weixin";
         Map<String, String> uriMap = extractedUri(channel);
         List<TreeNode<String>> treeNodes = new ArrayList<>();
 
-/*        MethodElement methodElement = new MethodElement();
-        PkgElement pkgElement = new PkgElement();
-        ClassElement classElement = new ClassElement();
-        FieldElement fieldElement = getFieldElement();
+        uriMap.forEach((pk, url) -> {
+            buildTree(channel, pk, treeNodes, url);
+        });
 
-        Map<ElementType, Element> elements = new ConcurrentHashMap<>();
-        elements.put(ElementType.PKG_ELEMENT, pkgElement);
-        elements.put(ElementType.CLASS_ELEMENT, classElement);
-        elements.put(ElementType.METHOD_ELEMENT, methodElement);
-        elements.put(ElementType.FIELD_ELEMENT, fieldElement);*/
-        /*uriMap.forEach((pk, url) -> {
-            buildTree(channel, pk, treeNodes, elements);
-        });*/
-//        buildTree(channel1, path1, treeNodes, elements);
-//        buildTree(channel1, path2, treeNodes, elements);
-
-
-        /*List<TreeNode<String>> elementType = treeNodes.stream().filter(tn -> tn.getExtra().get("elementType").toString().equals("0"))
-                .toList();
-        List<Tree<String>> build1 = TreeUtil.build(elementType, "4891509c-2b5f-431d-9013-e832e41371ef");
-        System.out.println(JSONUtil.toJsonPrettyStr(build1));*/
-
-        List<Tree<String>> build = TreeUtil.build(treeNodes, "appa");
+        List<Tree<String>> build = TreeUtil.build(treeNodes, "weixin");
         System.out.println(JSONUtil.toJsonPrettyStr(build));
     }
 
-    private static Map<String, String> extractedUri(String channel) {
-        if (channel.equalsIgnoreCase("weixin")) {
-            String host = "https://developers.weixin.qq.com";
-            String prefix = "/doc/oplatform/openApi/OpenApiDoc/";
-            String urlXpath = "//aside[@class='sidebar']/div/div/ul/li//a";
-            JXDocument jxDocument = JXDocument.create(getDocument("https://developers.weixin.qq.com/doc/oplatform/openApi/OpenApiDoc"));
-            List<JXNode> jxNodes = jxDocument.selN(urlXpath);
-            Map<String, String> map = new TreeMap<>();
-            jxNodes.forEach(n -> {
+    public static void buildTree(String channel, String path, List<TreeNode<String>> treeNodes, String url) {
+        int methodIndex = path.lastIndexOf("@");
+        int classIndex = path.lastIndexOf(".");
 
-                String uri = n.selOne("@href").asString();
-
-                String pcmPath = uri.replace(prefix, "").replace(".html", "");
-                int methodStart = pcmPath.lastIndexOf("/");
-                String method = pcmPath.substring(methodStart + 1);
-
-                String classPath = pcmPath.substring(0, methodStart);
-                int classStart = classPath.lastIndexOf("/");
-                String clazz = classPath.substring(classStart + 1);
-                clazz = StrUtil.toCamelCase(clazz, '-');
-
-                String key;
-                if (classStart == -1) {
-                    key = clazz + "@" + method;
-                } else {
-                    String pkg = pcmPath.substring(0, classStart);
-                    key = pkg + "/" + clazz + "@" + method;
-                }
-                String targetUrl = host + uri;
-                map.put(key, targetUrl);
-            });
-            System.out.println(JSONUtil.toJsonPrettyStr(map));
-            return map;
+        String method = path.substring(methodIndex + 1);
+        String clazz = path.substring(classIndex + 1, methodIndex);
+        String pkg = "";
+        if(classIndex != -1){
+            pkg = path.substring(0, classIndex);
         }
-        return null;
-    }
 
-    private static FieldElement getFieldElement() {
+        // 替换中文
+        String[] pkgItems = pkg.split("\\.");
+        for (String item : pkgItems) {
+            Object o = map.get(item);
+            if (o != null) {
+                pkg = pkg.replace(item, o.toString());
+            }
+        }
+        Object co = map.get(clazz);
+        if (co != null) {
+            clazz = co.toString();
+        }
 
-        List<FieldElement> fieldElements = new ArrayList<>();
-        List<FieldElement> fieldElements3 = new ArrayList<>();
+        String methodId = UUID.fastUUID().toString();
+        String clazzId = UUID.fastUUID().toString();
+        String pkgId = UUID.fastUUID().toString();
 
         FieldElement fieldElement = new FieldElement();
-        fieldElement.setType("Object");
-        fieldElement.setCode("aaa");
-        fieldElement.setDescr("aaa");
-        fieldElement.setIndex(0);
-        //fieldElement.setIo(1);
-        // 默认入参
-        //fieldElement.setIo(0);
+        JXDocument jxDocument = JXDocument.create(getDocument(url));
+
+        String xpath = "//h3[@id='请求参数']/following-sibling::div[1]/table//tr";
+        List<JXNode> jxNodes = jxDocument.selN(xpath);
+        for (JXNode jxNode : jxNodes) {
+            try {
+                String code = jxNode.selOne("./td[2]/code").asString();
+                String descr = jxNode.selOne("./td[3]").asString();
+                int index = Integer.parseInt(jxNode.selOne("./td[4]").asString());
+                int io = Integer.parseInt(jxNode.selOne("./td[5]").asString());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            //FieldElement fieldElement1 = new FieldElement(type, code, descr, index, io);
+        }
+        //fieldElement.setPkg(pkg);
+        // 多个参数
+        reduceField(pkg, methodId, fieldElement, treeNodes);
 
 
-        FieldElement f1 = new FieldElement();
-        f1.setType("String");
-        f1.setCode("aaa-1");
-        f1.setDescr("测");
-        f1.setIndex(0);
-        FieldElement f2 = new FieldElement();
-        f2.setType("String");
-        f2.setCode("aaa-2");
-        f2.setDescr("试");
-        f2.setIndex(1);
-        FieldElement f3 = new FieldElement();
-        f3.setType("Object");
-        f3.setCode("aaa-3");
-        f3.setDescr("测试");
-        f3.setIndex(2);
+        //FieldElement fieldElement = buildFieldElement(treeNodes, pkg, methodId);
 
-        FieldElement f331 = new FieldElement();
-        f331.setType("String");
-        f331.setCode("f331");
-        f331.setDescr("f332");
-        FieldElement f332 = new FieldElement();
-        f332.setType("String");
-        f332.setCode("f332");
-        f332.setDescr("f332");
+    }
 
-
-        fieldElements.add(f1);
-        fieldElements.add(f2);
-        fieldElements.add(f3);
-
-        fieldElements3.add(f331);
-        fieldElements3.add(f332);
-
-
-        fieldElement.setFields(fieldElements);
-        f3.setFields(fieldElements3);
-
+    private static FieldElement buildFieldElement(List<TreeNode<String>> treeNodes, String pkg, String methodId) {
+        FieldElement fieldElement = new FieldElement();
+        fieldElement.setPkg(pkg);
+        // 多个参数
+        reduceField(pkg, methodId, fieldElement, treeNodes);
         return fieldElement;
     }
 
@@ -172,7 +122,7 @@ public class BeanBuilder {
         // 构建树（第三方平台管理 /模板库管理 /获取模板列表）
         //String path = "第三方平台管理.模板库管理@获取模板列表";
         int methodIndex = path.lastIndexOf("@");
-        int classIndex = path.lastIndexOf(".");
+        int classIndex = path.lastIndexOf("/");
 
         String method = path.substring(methodIndex + 1);
         String clazz = path.substring(classIndex + 1, methodIndex);
@@ -190,7 +140,7 @@ public class BeanBuilder {
         if (co != null) {
             clazz = co.toString();
         }
-        
+
 
         /*TreeNode<String> treeRoot = new TreeNode<>();
         treeRoot.setId(channel);
@@ -250,6 +200,99 @@ public class BeanBuilder {
             treeClazz.setParentId(channel);
         }
     }
+
+    private static Map<String, String> extractedUri(String channel) {
+        if (channel.equalsIgnoreCase("weixin")) {
+            String host = "https://developers.weixin.qq.com";
+            String prefix = "/doc/oplatform/openApi/OpenApiDoc/";
+            String urlXpath = "//aside[@class='sidebar']/div/div/ul/li//a";
+            JXDocument jxDocument = JXDocument.create(getDocument("https://developers.weixin.qq.com/doc/oplatform/openApi/OpenApiDoc"));
+            List<JXNode> jxNodes = jxDocument.selN(urlXpath);
+            Map<String, String> map = new TreeMap<>();
+            jxNodes.forEach(n -> {
+
+                String uri = n.selOne("@href").asString();
+
+                String pcmPath = uri.replace(prefix, "").replace(".html", "");
+                int methodStart = pcmPath.lastIndexOf("/");
+                String method = pcmPath.substring(methodStart + 1);
+
+                String classPath = pcmPath.substring(0, methodStart);
+                int classStart = classPath.lastIndexOf("/");
+                String clazz = classPath.substring(classStart + 1);
+                clazz = StrUtil.toCamelCase(clazz, '-');
+
+                String key;
+                if (classStart == -1) {
+                    key = clazz + "@" + method;
+                } else {
+                    String pkg = pcmPath.substring(0, classStart);
+                    key = pkg.replace("/",".") + "." + clazz + "@" + method;
+                }
+                String targetUrl = host + uri;
+                map.put(key, targetUrl);
+            });
+            System.out.println(JSONUtil.toJsonPrettyStr(map));
+            return map;
+        }
+        return new HashMap<>();
+    }
+
+    private static FieldElement getFieldElement() {
+
+        List<FieldElement> fieldElements = new ArrayList<>();
+        List<FieldElement> fieldElements3 = new ArrayList<>();
+
+        FieldElement fieldElement = new FieldElement();
+        fieldElement.setType("Object");
+        fieldElement.setCode("aaa");
+        fieldElement.setDescr("aaa");
+        fieldElement.setIndex(0);
+        //fieldElement.setIo(1);
+        // 默认入参
+        //fieldElement.setIo(0);
+
+
+        FieldElement f1 = new FieldElement();
+        f1.setType("String");
+        f1.setCode("aaa-1");
+        f1.setDescr("测");
+        f1.setIndex(0);
+        FieldElement f2 = new FieldElement();
+        f2.setType("String");
+        f2.setCode("aaa-2");
+        f2.setDescr("试");
+        f2.setIndex(1);
+        FieldElement f3 = new FieldElement();
+        f3.setType("Object");
+        f3.setCode("aaa-3");
+        f3.setDescr("测试");
+        f3.setIndex(2);
+
+        FieldElement f331 = new FieldElement();
+        f331.setType("String");
+        f331.setCode("f331");
+        f331.setDescr("f332");
+        FieldElement f332 = new FieldElement();
+        f332.setType("String");
+        f332.setCode("f332");
+        f332.setDescr("f332");
+
+
+        fieldElements.add(f1);
+        fieldElements.add(f2);
+        fieldElements.add(f3);
+
+        fieldElements3.add(f331);
+        fieldElements3.add(f332);
+
+
+        fieldElement.setFields(fieldElements);
+        f3.setFields(fieldElements3);
+
+        return fieldElement;
+    }
+
 
     private static void reduceField(String pkg, String parentId, FieldElement element, List<TreeNode<String>> treeNodes) {
 
