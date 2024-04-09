@@ -13,7 +13,7 @@ import java.util.Map;
  * 修改人姓名      修改时间        版本号       描述
  */
 @Data
-public class PkgElement implements Element {
+public class PackageElement implements Element {
     private Integer elementType = 3;
 
     private String pgk;

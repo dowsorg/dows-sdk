@@ -189,12 +189,12 @@ public class BeanBuilder {
             /*treePkg.setName(pkg);*/
             treePkg.setId(pkgId);
             treePkg.setParentId(channel);
-            PkgElement pkgElement = (PkgElement) elements.get(ElementType.PKG_ELEMENT);
-            pkgElement.setPgk(pkg);
-            pkgElement.setDescr("${pkgDescr}");
+            PackageElement packageElement = (PackageElement) elements.get(ElementType.PKG_ELEMENT);
+            packageElement.setPgk(pkg);
+            packageElement.setDescr("${pkgDescr}");
            /* pkgMap.put("type", "pkg");
             pkgMap.put("code", "pkg");*/
-            treePkg.setExtra(pkgElement.toMap());
+            treePkg.setExtra(packageElement.toMap());
             treeNodes.add(treePkg);
 
             treeClazz.setParentId(pkgId);

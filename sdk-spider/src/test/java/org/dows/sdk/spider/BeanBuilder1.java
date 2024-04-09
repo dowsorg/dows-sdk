@@ -32,12 +32,12 @@ public class BeanBuilder1 {
         List<TreeNode<String>> treeNodes = new ArrayList<>();
 
         MethodElement methodElement = new MethodElement();
-        PkgElement pkgElement = new PkgElement();
+        PackageElement packageElement = new PackageElement();
         ClassElement classElement = new ClassElement();
         FieldElement fieldElement = getFieldElement();
 
         Map<ElementType, Element> elements = new ConcurrentHashMap<>();
-        elements.put(ElementType.PKG_ELEMENT, pkgElement);
+        elements.put(ElementType.PKG_ELEMENT, packageElement);
         elements.put(ElementType.CLASS_ELEMENT, classElement);
         elements.put(ElementType.METHOD_ELEMENT, methodElement);
         elements.put(ElementType.FIELD_ELEMENT, fieldElement);

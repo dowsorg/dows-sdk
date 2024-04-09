@@ -93,7 +93,7 @@ public class ApiTest {
         List<TreeNode<String>> treeNodes = new ArrayList<>();
 
         Element methodElement = new MethodElement();
-        Element pkgElement = new PkgElement();
+        Element pkgElement = new PackageElement();
         Element classElement = new ClassElement();
         FieldElement fieldElement = getFieldElement();
 
