@@ -39,6 +39,10 @@ public class BeanBuilder {
 
     private static final Map<String, Object> map = new HashMap<>();
 
+    private static Map<String, PackageElement> packageMap = new HashMap<>();
+    private static Map<String, ClassElement> classMap = new HashMap<>();
+
+
     static {
         try {
             map.putAll(JsonReader.readJsonFile(new ClassPathResource("name.json").getStream()));
@@ -53,8 +57,11 @@ public class BeanBuilder {
         Map<String, String> uriMap = extractedUri(channel);
         List<TreeNode<String>> treeNodes = new ArrayList<>();
 
-        uriMap.forEach((pk, url) -> {
-            buildTree(channel, pk, treeNodes, url);
+        uriMap.forEach((path, docUrl) -> {
+            // 构建pkg 和 class
+
+
+            buildTree(channel, path, treeNodes, docUrl);
         });
 
         List<Tree<String>> build = TreeUtil.build(treeNodes, "weixin");
@@ -84,6 +91,24 @@ public class BeanBuilder {
         if (co != null) {
             clazz = co.toString();
         }
+
+
+        PackageElement packageElement = packageMap.get(pkg);
+        if (packageElement == null) {
+            packageElement = new PackageElement();
+            packageElement.setPgk(pkg);
+            packageMap.put(pkg, packageElement);
+        }
+
+        ClassElement classElement = classMap.get(pkg + "." + clazz);
+        if (classElement == null) {
+            classElement = new ClassElement();
+            classElement.setCode(clazz);
+            classElement.setPgk(pkg);
+        }
+
+
+
 
         String methodId = UUID.fastUUID().toString();
         String clazzId = UUID.fastUUID().toString();
