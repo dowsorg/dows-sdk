@@ -1,4 +1,4 @@
-package org.dows.sdk.extract;
+package org.dows.sdk.annotations;
 
 import java.lang.annotation.*;
 

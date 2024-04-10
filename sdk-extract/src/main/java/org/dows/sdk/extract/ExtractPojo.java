@@ -1,7 +1,7 @@
 package org.dows.sdk.extract;
 
 import lombok.Data;
-import org.dows.sdk.extract.Extract;
+import org.dows.sdk.annotations.Extract;
 
 import java.lang.reflect.Field;
 

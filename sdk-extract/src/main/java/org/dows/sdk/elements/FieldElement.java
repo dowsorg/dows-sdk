@@ -1,8 +1,8 @@
-package org.dows.sdk.spider.elements;
+package org.dows.sdk.elements;
 
 import lombok.Data;
-import org.dows.sdk.extract.ElementMapping;
-import org.dows.sdk.extract.Extract;
+import org.dows.sdk.annotations.ElementMapping;
+import org.dows.sdk.annotations.Extract;
 
 import java.util.List;
 

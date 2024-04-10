@@ -1,4 +1,6 @@
-package org.dows.sdk.extract;
+package org.dows.sdk.annotations;
+
+import org.dows.sdk.extract.ExtractHandler;
 
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;

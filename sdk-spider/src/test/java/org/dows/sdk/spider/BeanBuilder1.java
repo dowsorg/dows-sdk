@@ -6,7 +6,7 @@ import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import org.dows.sdk.spider.elements.*;
+import org.dows.sdk.elements.*;
 
 import java.util.ArrayList;
 import java.util.List;

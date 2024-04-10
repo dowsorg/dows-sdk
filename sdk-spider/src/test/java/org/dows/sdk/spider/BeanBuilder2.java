@@ -12,7 +12,7 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
-import org.dows.sdk.spider.elements.*;
+import org.dows.sdk.elements.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.seimicrawler.xpath.JXDocument;
@@ -87,12 +87,12 @@ public class BeanBuilder2 {
         List<TreeNode<String>> treeNodes = new ArrayList<>();
 
         MethodElement methodElement = new MethodElement();
-        PackageElement packageElement = new PackageElement();
+//        PackageElement packageElement = new PackageElement();
         ClassElement classElement = new ClassElement();
         FieldElement fieldElement = getFieldElement();
 
         Map<ElementType, Element> elements = new ConcurrentHashMap<>();
-        elements.put(ElementType.PKG_ELEMENT, packageElement);
+//        elements.put(ElementType.PKG_ELEMENT, packageElement);
         elements.put(ElementType.CLASS_ELEMENT, classElement);
         elements.put(ElementType.METHOD_ELEMENT, methodElement);
         elements.put(ElementType.FIELD_ELEMENT, fieldElement);

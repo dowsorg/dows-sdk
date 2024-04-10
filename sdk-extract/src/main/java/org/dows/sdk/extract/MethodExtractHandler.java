@@ -1,6 +1,8 @@
 package org.dows.sdk.extract;
 
 import lombok.extern.slf4j.Slf4j;
+import org.dows.sdk.elements.Element;
+import org.dows.sdk.elements.MethodElement;
 import org.seimicrawler.xpath.JXDocument;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MethodExtractHandler implements ExtractHandler {
     @Override
-    public void handle(JXDocument jxDocument, ExtractPojo extractPojo) {
+    public void handle(JXDocument jxDocument, ExtractPojo extractPojo, Element element) {
 
         log.info("{}", extractPojo);
     }

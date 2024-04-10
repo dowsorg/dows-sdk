@@ -1,9 +1,11 @@
-package org.dows.sdk.spider.elements;
+package org.dows.sdk.extract;
 
 import cn.hutool.json.JSONUtil;
 import lombok.Data;
-import org.dows.sdk.extract.Extract;
-import org.dows.sdk.extract.ExtractPojo;
+import org.dows.sdk.annotations.Extract;
+import org.dows.sdk.elements.ClassElement;
+import org.dows.sdk.elements.FieldElement;
+import org.dows.sdk.elements.MethodElement;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -11,8 +13,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @description: </br>
+ * @author: lait.zhang@gmail.com
+ * @date: 4/10/2024 11:55 AM
+ * @history: </br>
+ * <author>      <time>      <version>    <desc>
+ * 修改人姓名      修改时间        版本号       描述
+ */
 @Data
-public class MethodElement implements Element {
+public class ExtractElement {
+    @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::*[1]/text()")
+    private ClassElement classElement;
 
     // 方法code
     @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::*[1]/text()")
@@ -47,10 +59,6 @@ public class MethodElement implements Element {
     @Extract(channel = "weixin", xpath = "//h3[@id='返回参数']/following-sibling::div[1]/table//tr")
     private Map<String, List<FieldElement>> output;
 
-    // 顺序
-    private int index;
-    // 元素类型[1:方法]
-    private Integer elementType = 1;
 
 
     public static void main(String[] args) {
@@ -78,4 +86,6 @@ public class MethodElement implements Element {
         }
         return extractPojos;
     }
+
 }
+

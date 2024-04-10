@@ -13,10 +13,10 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
-import org.dows.sdk.extract.Extract;
+import org.dows.sdk.elements.*;
+import org.dows.sdk.annotations.Extract;
 import org.dows.sdk.extract.ExtractHandler;
 import org.dows.sdk.extract.ExtractPojo;
-import org.dows.sdk.spider.elements.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.seimicrawler.xpath.JXDocument;
@@ -122,7 +122,7 @@ public class BeanBuilder {
         for (ExtractPojo extractPojo : extractPojos) {
             Extract extract = extractPojo.getExtract();
             ExtractHandler extractHandler = applicationContext.getBean(extract.handler());
-            extractHandler.handle(jxDocument, extractPojo);
+            extractHandler.handle(jxDocument, extractPojo,classElement);
         }
 
         FieldElement fieldElement = new FieldElement();

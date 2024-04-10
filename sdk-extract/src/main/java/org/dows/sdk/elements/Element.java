@@ -1,4 +1,4 @@
-package org.dows.sdk.spider.elements;
+package org.dows.sdk.elements;
 
 import cn.hutool.core.bean.BeanUtil;
 

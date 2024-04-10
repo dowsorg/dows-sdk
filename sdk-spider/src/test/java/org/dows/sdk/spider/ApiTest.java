@@ -8,7 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.sdk.spider.elements.*;
+import org.dows.sdk.elements.*;
 import org.dows.sdk.spider.extract.DyOpenExtracter;
 import org.dows.sdk.spider.extract.WxOpenExtracter;
 import org.dows.sdk.spider.extract.WxPayExtracter;
