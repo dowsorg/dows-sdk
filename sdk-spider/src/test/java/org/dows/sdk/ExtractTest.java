@@ -1,9 +1,6 @@
 package org.dows.sdk;
 
 import cn.hutool.core.io.resource.ClassPathResource;
-import cn.hutool.core.lang.tree.Tree;
-import cn.hutool.core.lang.tree.TreeNode;
-import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
@@ -35,7 +32,6 @@ import java.util.*;
 @SpringBootTest
 public class ExtractTest {
     private static final Map<String, Object> map = new HashMap<>();
-
     private static Map<String, PackageElement> packageMap = new HashMap<>();
     private static Map<String, ClassElement> classMap = new HashMap<>();
 
@@ -52,49 +48,28 @@ public class ExtractTest {
     @Test
     public void test() {
         String channel = "weixin";
-        Map<String, String> uriMap = extractedUri(channel);
-        List<TreeNode<String>> treeNodes = new ArrayList<>();
         List<ExtractElement> extractElements = new ArrayList<>();
-        uriMap.forEach((path, docUrl) -> {
-            buildTree(channel, path, docUrl);
-        });
+        Map<String, String> uriMap = extractedUri(channel);
+        uriMap.keySet()
+                .stream()
+                .parallel()
+                .forEach((path) -> {
+                    ExtractElement extractElement = extractElement(channel, path, uriMap.get(path));
+                    extractElements.add(extractElement);
+                });
+        log.info("size:{},content: {}", extractElements.size(), JSONUtil.toJsonPrettyStr(extractElements));
+        buildTree(extractElements);
+    }
 
-        List<Tree<String>> build = TreeUtil.build(treeNodes, "weixin");
-        System.out.println(JSONUtil.toJsonPrettyStr(build));
+    public static void buildTree(List<ExtractElement> extractElements) {
+        log.info("buildTree");
+        //List<TreeNode<String>> treeNodes = new ArrayList<>();
+        //List<Tree<String>> build = TreeUtil.build(treeNodes, "weixin");
+        //System.out.println(JSONUtil.toJsonPrettyStr(build));
     }
 
 
-    public static ExtractElement buildTree(String channel, String path, String url) {
-        int methodIndex = path.lastIndexOf("@");
-        int classIndex = path.lastIndexOf(".");
-
-        String method = path.substring(methodIndex + 1);
-        String clazz = path.substring(classIndex + 1, methodIndex);
-        String pkg = "";
-        if (classIndex != -1) {
-            pkg = path.substring(0, classIndex);
-        }
-
-        // 替换中文
-        String[] pkgItems = pkg.split("\\.");
-        for (String item : pkgItems) {
-            Object o = map.get(item);
-            if (o != null) {
-                pkg = pkg.replace(item, o.toString());
-            }
-        }
-        Object co = map.get(clazz);
-        if (co != null) {
-            clazz = co.toString();
-        }
-
-        ClassElement classElement = classMap.get(pkg + "." + clazz);
-        if (classElement == null) {
-            classElement = new ClassElement();
-            classElement.setCode(clazz);
-            classElement.setPgk(pkg);
-        }
-
+    public static ExtractElement extractElement(String channel, String path, String url) {
 
         ApplicationContext applicationContext = SpringUtil.getApplicationContext();
 
@@ -104,6 +79,7 @@ public class ExtractTest {
         List<ExtractPojo> extractPojos = extractElement.getXpath(channel);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
+            extractPojo.setPath(path);
             Extract extract = extractPojo.getExtract();
             ExtractHandler extractHandler = applicationContext.getBean(extract.handler());
             extractHandler.handle(jxDocument, extractPojo);

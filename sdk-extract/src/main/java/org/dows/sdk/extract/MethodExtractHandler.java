@@ -12,7 +12,7 @@ public class MethodExtractHandler implements ExtractHandler {
 
         try {
             log.info(this.getClass().getSimpleName() + " extract form :{}", extractPojo.getUrl());
-            System.out.println(this.getClass().getSimpleName() + " extract form :" + extractPojo.getUrl());
+            /*System.out.println(this.getClass().getSimpleName() + " extract form :" + extractPojo.getUrl());*/
         } catch (Exception e) {
             log.error("extract error:{}");
         }

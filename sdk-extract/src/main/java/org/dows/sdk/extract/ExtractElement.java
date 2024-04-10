@@ -22,11 +22,11 @@ import java.util.Map;
  */
 @Data
 public class ExtractElement {
-    @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::*[1]/text()", handler = ClassExtractHandler.class)
+    @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()", handler = ClassExtractHandler.class)
     private ClassElement classElement;
 
     // 方法code
-    @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::*[1]/text()", handler = CodeExtractHandler.class)
+    @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()", handler = CodeExtractHandler.class)
     @Extract(channel = "alipay", xpath = "")
     @Extract(channel = "douyin", xpath = "")
     private String code;
@@ -38,7 +38,7 @@ public class ExtractElement {
     // 方法描述
     @Extract(channel = "alipay", xpath = "")
     @Extract(channel = "douyin", xpath = "")
-    @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='功能描述']/following-sibling::*[1]/text()", handler = DescrExtractHandler.class)
+    @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='功能描述']/following-sibling::p[1]/text()", handler = DescrExtractHandler.class)
     private String descr;
 
     // 方法接口地址

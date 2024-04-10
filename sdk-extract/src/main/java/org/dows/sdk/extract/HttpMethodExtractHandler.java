@@ -10,6 +10,6 @@ public class HttpMethodExtractHandler implements ExtractHandler {
     @Override
     public void handle(JXDocument jxDocument, ExtractPojo extractPojo) {
         log.info(this.getClass().getSimpleName() + " extract form :{}", extractPojo.getUrl());
-        System.out.println(this.getClass().getSimpleName() + " extract form :" + extractPojo.getUrl());
+        /*System.out.println(this.getClass().getSimpleName() + " extract form :" + extractPojo.getUrl());*/
     }
 }

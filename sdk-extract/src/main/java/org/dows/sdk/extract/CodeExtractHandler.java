@@ -14,10 +14,12 @@ public class CodeExtractHandler implements ExtractHandler {
     public void handle(JXDocument jxDocument, ExtractPojo extractPojo) {
         //
         log.info(this.getClass().getSimpleName() + " extract form :{}", extractPojo.getUrl());
-        System.out.println(this.getClass().getSimpleName() + " extract form :" + extractPojo.getUrl());
+        /*System.out.println(this.getClass().getSimpleName() + " extract form :" + extractPojo.getUrl());*/
         Extract extract = extractPojo.getExtract();
         try {
             JXNode jxNode = jxDocument.selNOne(extract.xpath());
+            String code = jxNode.asString();
+            extractPojo.setValue(code);
             log.info(jxNode.toString());
         } catch (Exception e) {
             log.error("提取失败", e);
