@@ -1,4 +1,4 @@
-package org.dows.sdk.spider;
+package org.dows.sdk;
 
 import cn.hutool.core.lang.tree.TreeNode;
 import org.openqa.selenium.JavascriptExecutor;

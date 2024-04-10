@@ -15,4 +15,6 @@ public class ExtractPojo {
     private Field field;
 
     private Extract extract;
+
+    private String url;
 }

@@ -1,4 +1,4 @@
-package org.dows.sdk.spider;
+package org.dows.sdk;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

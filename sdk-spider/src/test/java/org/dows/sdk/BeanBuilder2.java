@@ -1,4 +1,4 @@
-package org.dows.sdk.spider;
+package org.dows.sdk;
 
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.lang.UUID;

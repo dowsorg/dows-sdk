@@ -1,4 +1,4 @@
-package org.dows.sdk.spider;
+package org.dows.sdk;
 
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.lang.UUID;
@@ -15,6 +15,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
 import org.dows.sdk.elements.*;
 import org.dows.sdk.annotations.Extract;
+import org.dows.sdk.extract.ExtractElement;
 import org.dows.sdk.extract.ExtractHandler;
 import org.dows.sdk.extract.ExtractPojo;
 import org.jsoup.Jsoup;
@@ -117,12 +118,12 @@ public class BeanBuilder {
 
         JXDocument jxDocument = JXDocument.create(getDocument(url));
 
-        MethodElement methodElement = new MethodElement();
-        List<ExtractPojo> extractPojos = methodElement.getXpath(channel);
+        ExtractElement extractElement = new ExtractElement();
+        List<ExtractPojo> extractPojos = extractElement.getXpath(channel);
         for (ExtractPojo extractPojo : extractPojos) {
             Extract extract = extractPojo.getExtract();
             ExtractHandler extractHandler = applicationContext.getBean(extract.handler());
-            extractHandler.handle(jxDocument, extractPojo,classElement);
+            extractHandler.handle(jxDocument, extractPojo);
         }
 
         FieldElement fieldElement = new FieldElement();

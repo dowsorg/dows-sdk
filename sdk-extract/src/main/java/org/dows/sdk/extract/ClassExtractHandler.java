@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class FieldExtractHandler implements ExtractHandler {
+public class ClassExtractHandler implements ExtractHandler {
     @Override
     public void handle(JXDocument jxDocument, ExtractPojo extractPojo) {
         log.info(this.getClass().getSimpleName() + " extract form :{}", extractPojo.getUrl());

@@ -6,17 +6,7 @@
         <artifactId>dows-sdk</artifactId>
         <version>20230604-SNAPSHOT</version>
     </parent>
-
-    <groupId>org.dows.framework</groupId>
     <artifactId>sdk-extract</artifactId>
-    <packaging>jar</packaging>
-
-    <name>sdk-extract</name>
-    <url>http://maven.apache.org</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
 

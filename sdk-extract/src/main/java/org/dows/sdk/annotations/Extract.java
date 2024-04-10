@@ -1,5 +1,6 @@
 package org.dows.sdk.annotations;
 
+import org.dows.sdk.extract.DefaultExtractHandler;
 import org.dows.sdk.extract.ExtractHandler;
 
 import java.lang.annotation.Repeatable;
@@ -26,8 +27,6 @@ public @interface Extract {
 
     String link() default "";
 
-    Class<? extends ExtractHandler> handler() default ExtractHandler.class;
-   //String handler() default "";
-
+    Class<? extends ExtractHandler> handler() default DefaultExtractHandler.class;
 
 }
