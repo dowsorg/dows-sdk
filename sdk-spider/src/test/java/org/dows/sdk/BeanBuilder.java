@@ -16,7 +16,7 @@ import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
 import org.dows.sdk.elements.*;
 import org.dows.sdk.annotations.Extract;
 import org.dows.sdk.extract.ExtractElement;
-import org.dows.sdk.extract.ExtractHandler;
+import org.dows.sdk.extract.Extractable;
 import org.dows.sdk.extract.ExtractPojo;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -122,8 +122,8 @@ public class BeanBuilder {
         List<ExtractPojo> extractPojos = extractElement.getXpath(channel);
         for (ExtractPojo extractPojo : extractPojos) {
             Extract extract = extractPojo.getExtract();
-            ExtractHandler extractHandler = applicationContext.getBean(extract.handler());
-            extractHandler.handle(jxDocument, extractPojo);
+            Extractable extractable = applicationContext.getBean(extract.handler());
+            extractable.extract(jxDocument, extractPojo);
         }
 
         FieldElement fieldElement = new FieldElement();

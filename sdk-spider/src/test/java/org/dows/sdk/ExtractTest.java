@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.dows.sdk.annotations.Extract;
 import org.dows.sdk.elements.ClassElement;
 import org.dows.sdk.extract.ExtractElement;
-import org.dows.sdk.extract.ExtractHandler;
 import org.dows.sdk.extract.ExtractPojo;
+import org.dows.sdk.extract.Extractable;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
@@ -70,19 +70,18 @@ public class ExtractTest {
 
 
     public static ExtractElement extractElement(String channel, String path, String url) {
-
         ApplicationContext applicationContext = SpringUtil.getApplicationContext();
-
         JXDocument jxDocument = JXDocument.create(getDocument(url));
-
         ExtractElement extractElement = new ExtractElement();
         List<ExtractPojo> extractPojos = extractElement.getXpath(channel);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
             extractPojo.setPath(path);
             Extract extract = extractPojo.getExtract();
-            ExtractHandler extractHandler = applicationContext.getBean(extract.handler());
-            extractHandler.handle(jxDocument, extractPojo);
+            Extractable extractable = applicationContext.getBean(extract.handler());
+            if (extractable != null) {
+                extractable.extract(jxDocument, extractPojo);
+            }
         }
         return extractElement;
     }

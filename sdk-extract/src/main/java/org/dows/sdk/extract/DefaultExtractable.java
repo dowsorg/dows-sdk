@@ -6,10 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class DefaultExtractHandler implements ExtractHandler {
+public class DefaultExtractable implements Extractable {
     @Override
-    public void handle(JXDocument jxDocument, ExtractPojo extractPojo) {
+    public void extract(JXDocument jxDocument, ExtractPojo extractPojo) {
         log.info(this.getClass().getSimpleName() + " extract form :{}", extractPojo.getUrl());
-        /*System.out.println(this.getClass().getSimpleName() + " extract form :" + extractPojo.getUrl());*/
     }
 }
