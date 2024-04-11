@@ -12,9 +12,7 @@ import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.sdk.annotations.Extract;
 import org.dows.sdk.elements.ClassElement;
-import org.dows.sdk.extract.ExtractElement;
-import org.dows.sdk.extract.ExtractPojo;
-import org.dows.sdk.extract.Extractable;
+import org.dows.sdk.extract.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
@@ -49,7 +47,7 @@ public class ExtractTest {
     public void test() {
         String channel = "weixin";
         List<ExtractElement> extractElements = new ArrayList<>();
-        Map<String, String> uriMap = extractedUri(channel);
+        Map<String, String> uriMap = extractWeixinUris(channel);
         uriMap.keySet()
                 .stream()
                 .parallel()
@@ -87,41 +85,41 @@ public class ExtractTest {
     }
 
 
-    private static Map<String, String> extractedUri(String channel) {
-        if (channel.equalsIgnoreCase("weixin")) {
-            String host = "https://developers.weixin.qq.com";
-            String prefix = "/doc/oplatform/openApi/OpenApiDoc/";
-            String urlXpath = "//aside[@class='sidebar']/div/div/ul/li//a";
-            JXDocument jxDocument = JXDocument.create(getDocument("https://developers.weixin.qq.com/doc/oplatform/openApi/OpenApiDoc"));
-            List<JXNode> jxNodes = jxDocument.selN(urlXpath);
-            Map<String, String> map = new TreeMap<>();
-            jxNodes.forEach(n -> {
-
-                String uri = n.selOne("@href").asString();
-
-                String pcmPath = uri.replace(prefix, "").replace(".html", "");
-                int methodStart = pcmPath.lastIndexOf("/");
-                String method = pcmPath.substring(methodStart + 1);
-
-                String classPath = pcmPath.substring(0, methodStart);
-                int classStart = classPath.lastIndexOf("/");
-                String clazz = classPath.substring(classStart + 1);
-                clazz = StrUtil.toCamelCase(clazz, '-');
-
-                String key;
-                if (classStart == -1) {
-                    key = clazz + "@" + method;
-                } else {
-                    String pkg = pcmPath.substring(0, classStart);
-                    key = pkg.replace("/", ".") + "." + clazz + "@" + method;
-                }
-                String targetUrl = host + uri;
-                map.put(key, targetUrl);
-            });
-            System.out.println(JSONUtil.toJsonPrettyStr(map));
-            return map;
+    private static Map<String, String> extractWeixinUris(String channel) {
+        ExtractProperties extractProperties = SpringUtil.getBean(ExtractProperties.class);
+        ExtractSetting extractSetting = extractProperties.getExtractors().get(channel);
+        if (null == extractSetting) {
+            return new HashMap<>();
         }
-        return new HashMap<>();
+        String host = extractSetting.getHost();
+        String seed = extractSetting.getSeed();
+        String xpath = extractSetting.getXpath();
+        JXDocument jxDocument = JXDocument.create(getDocument(host + seed));
+        List<JXNode> jxNodes = jxDocument.selN(xpath);
+        Map<String, String> map = new TreeMap<>();
+        jxNodes.forEach(n -> {
+            String uri = n.selOne("@href").asString();
+            String pcmPath = uri.replace(seed, "").replace(".html", "");
+            int methodStart = pcmPath.lastIndexOf("/");
+            String method = pcmPath.substring(methodStart + 1);
+
+            String classPath = pcmPath.substring(0, methodStart);
+            int classStart = classPath.lastIndexOf("/");
+            String clazz = classPath.substring(classStart + 1);
+            clazz = StrUtil.toCamelCase(clazz, '-');
+
+            String key;
+            if (classStart == -1) {
+                key = clazz + "@" + method;
+            } else {
+                String pkg = pcmPath.substring(0, classStart);
+                key = pkg.replace("/", ".") + "." + clazz + "@" + method;
+            }
+            String targetUrl = host + uri;
+            map.put(key, targetUrl);
+        });
+        System.out.println(JSONUtil.toJsonPrettyStr(map));
+        return map;
     }
 
     public static Document getDocument(String seed) {

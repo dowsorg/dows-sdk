@@ -1,0 +1,35 @@
+dows:
+  sdk:
+    extractors:
+      weixin:
+        host: https://developers.weixin.qq.com
+        seed: /doc/oplatform/openApi/OpenApiDoc/
+        xpath: //aside[@class='sidebar']/div/div/ul/li//a
+        extractors:
+          - name: code
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
+
+          - name: code
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+          - name: code
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+      meituan:
+        host: https://developers.weixin.qq.com
+        seed: /doc/oplatform/openApi/OpenApiDoc/
+        xpath: //aside[@class='sidebar']/div/div/ul/li//a
+        extractors:
+          - name: code
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+          - name: code
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+          - name: code
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor

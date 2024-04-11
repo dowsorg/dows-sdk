@@ -4,5 +4,7 @@ import org.seimicrawler.xpath.JXDocument;
 
 public interface Extractable {
 
-    void extract(JXDocument jxDocument, ExtractPojo extractPojo);
+    default void extract(JXDocument jxDocument, ExtractPojo extractPojo) {
+    }
+
 }

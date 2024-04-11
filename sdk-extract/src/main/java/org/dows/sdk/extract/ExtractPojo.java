@@ -13,11 +13,13 @@ public class ExtractPojo {
 
     private Object element;
 
-    private String name;
+    private String fieldName;
 
     private Field field;
 
     private Extract extract;
+
+    private Extractor extractor;
 
     private String url;
 

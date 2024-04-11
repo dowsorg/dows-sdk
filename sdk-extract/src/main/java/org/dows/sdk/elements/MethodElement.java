@@ -71,7 +71,7 @@ public class MethodElement implements Element {
             ExtractPojo extractPojo = new ExtractPojo();
             extractPojo.setField(declaredField);
             extractPojo.setElement(this);
-            extractPojo.setName(declaredField.getName());
+            extractPojo.setFieldName(declaredField.getName());
             Extract[] annotationsByType = declaredField.getAnnotationsByType(Extract.class);
             for (Extract extract : annotationsByType) {
                 if (extract.channel().equalsIgnoreCase(platform)) {
