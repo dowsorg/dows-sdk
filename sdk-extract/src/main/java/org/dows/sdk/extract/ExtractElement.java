@@ -96,7 +96,7 @@ public class ExtractElement {
      * @param platform
      * @return
      */
-    public List<ExtractPojo> getXpath1(String platform) {
+    public List<ExtractPojo> toExtracts(String platform) {
         ExtractProperties extractProperties = SpringUtil.getBean(ExtractProperties.class);
         Map<String, ExtractSetting> extractors = extractProperties.getExtractors();
         ExtractSetting extractSetting = extractors.get(platform);

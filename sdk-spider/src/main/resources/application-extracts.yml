@@ -1,7 +1,46 @@
 dows:
   sdk:
     extractors:
-      weixin:
+      weixin-open:
+        host: https://developers.weixin.qq.com
+        seed: /doc/oplatform/openApi/OpenApiDoc/
+        xpath: //aside[@class='sidebar']/div/div/ul/li//a
+        extractors:
+          - name: classElement
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
+
+          - name: code
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
+
+          - name: name
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+          - name: descr
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+          - name: methodUrl
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+          - name: httpMethod
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+          - name: input
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+          - name: output
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+
+
+
+      weixin-pay:
         host: https://developers.weixin.qq.com
         seed: /doc/oplatform/openApi/OpenApiDoc/
         xpath: //aside[@class='sidebar']/div/div/ul/li//a

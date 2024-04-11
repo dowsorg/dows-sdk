@@ -33,10 +33,7 @@ public interface SdkSpider {
         uriMap.keySet()
                 .stream()
                 .parallel()
-                .forEach((path) -> {
-                    ExtractElement extractElement = extractElement(platform, path, uriMap.get(path));
-                    extractElements.add(extractElement);
-                });
+                .forEach(path -> extractElements.add(extractElement(platform, path, uriMap.get(path))));
         return extractElements;
     }
 

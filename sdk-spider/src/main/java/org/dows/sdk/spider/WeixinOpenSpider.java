@@ -29,7 +29,7 @@ public class WeixinOpenSpider implements SdkSpider {
     private final ApplicationContext applicationContext;
 
     public Map<String, String> extractUris(String platform) {
-        ExtractProperties extractProperties = SpringUtil.getBean(ExtractProperties.class);
+        ExtractProperties extractProperties = applicationContext.getBean(ExtractProperties.class);
         ExtractSetting extractSetting = extractProperties.getExtractors().get(platform);
         if (null == extractSetting) {
             return new HashMap<>();
@@ -69,7 +69,7 @@ public class WeixinOpenSpider implements SdkSpider {
     public ExtractElement extractElement(String platform, String path, String url) {
         JXDocument jxDocument = JXDocument.create(SdkSpider.getDocument(url));
         ExtractElement extractElement = new ExtractElement();
-        List<ExtractPojo> extractPojos = extractElement.getXpath(platform);
+        List<ExtractPojo> extractPojos = extractElement.toExtracts(platform);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
             extractPojo.setPath(path);

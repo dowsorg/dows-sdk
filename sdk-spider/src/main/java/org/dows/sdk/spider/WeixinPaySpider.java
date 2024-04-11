@@ -72,7 +72,7 @@ public class WeixinPaySpider {
     public ExtractElement extractElement(String platform, String path, String url) {
         JXDocument jxDocument = JXDocument.create(SdkSpider.getDocument(url));
         ExtractElement extractElement = new ExtractElement();
-        List<ExtractPojo> extractPojos = extractElement.getXpath(platform);
+        List<ExtractPojo> extractPojos = extractElement.toExtracts(platform);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
             extractPojo.setPath(path);

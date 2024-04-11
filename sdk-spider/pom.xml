@@ -12,7 +12,7 @@
 
         <dependency>
             <groupId>org.dows.cloud</groupId>
-            <artifactId>sdk-extract</artifactId>
+            <artifactId>sdk-builder</artifactId>
             <version>20230604-SNAPSHOT</version>
         </dependency>
 
