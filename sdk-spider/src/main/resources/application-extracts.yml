@@ -6,19 +6,23 @@ dows:
         seed: /doc/oplatform/openApi/OpenApiDoc/
         xpath: //aside[@class='sidebar']/div/div/ul/li//a
         extractors:
-          - name: classElement
+          - name: classDescr
             xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
             handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
 
-          - name: code
+          - name: clazzCode
             xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
             handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
 
-          - name: name
+          - name: methodName
+            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
+
+          - name: methodCode
             xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
             handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
 
-          - name: descr
+          - name: methodDesc
             xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
             handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
 
