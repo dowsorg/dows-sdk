@@ -20,7 +20,7 @@ spring:
   application:
     name: dows-hep
   profiles:
-    include: crawler,extracts
+    include: crawler,extracts,builder
     active: dev
 
 

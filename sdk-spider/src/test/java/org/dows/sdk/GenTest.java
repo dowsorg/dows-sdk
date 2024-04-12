@@ -1,13 +1,15 @@
 package org.dows.sdk;
 
-import cn.hutool.extra.template.TemplateEngine;
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.sdk.extract.ExtractElement;
+import org.dows.sdk.extract.ExtractMetadata;
 import org.dows.sdk.spider.SdkSpider;
+import org.dows.sdk.tooler.MavenTooler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,14 +28,16 @@ public class GenTest {
     private SdkSpider weixinOpenSpider;
 
     @Autowired
-    private MavenBuilder mavenBuilder;
+    private MavenTooler mavenTooler;
 
     @Test
     public void test() {
         // extract
-        List<ExtractElement> extractElements = weixinOpenSpider.crawling("weixin-open");
-        // todo build
-        mavenBuilder.build("weixin-open",extractElements);
+        //List<ExtractElement> extractElements = weixinOpenSpider.crawling("weixin-open");
+        List<ExtractMetadata> extractMetadata = new ArrayList<>();
+        log.info(JSONUtil.toJsonPrettyStr(extractMetadata));
+        // todo builder
+        mavenTooler.build("weixin-open", extractMetadata);
         // todo dispatch
 
 

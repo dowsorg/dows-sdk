@@ -107,8 +107,8 @@
 ////        buildTree(channel1, path1, treeNodes, elements);
 ////        buildTree(channel1, path2, treeNodes, elements);
 //
-//        List<Tree<String>> build = TreeUtil.build(treeNodes, "weixin");
-//        System.out.println(JSONUtil.toJsonPrettyStr(build));
+//        List<Tree<String>> builder = TreeUtil.builder(treeNodes, "weixin");
+//        System.out.println(JSONUtil.toJsonPrettyStr(builder));
 //    }
 //
 //    private static FieldElement getFieldElement() {

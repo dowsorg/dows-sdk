@@ -131,10 +131,10 @@
                             &lt;!&ndash;别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置&ndash;&gt;
                             <alias>${image.alias}</alias>
                             &lt;!&ndash;镜像build相关配置&ndash;&gt;
-                            <build>
+                            <builder>
                                 &lt;!&ndash;使用dockerFile文件&ndash;&gt;
                                 <dockerFile>${project.basedir}/Dockerfile</dockerFile>
-                            </build>
+                            </builder>
                             &lt;!&ndash;配置docker-compose文件&ndash;&gt;
                             <external>
                                 <type>compose</type>
@@ -167,11 +167,11 @@
                 &lt;!&ndash;将插件绑定在某个phase执行&ndash;&gt;
                 <executions>
                     <execution>
-                        <id>build-image</id>
-                        &lt;!&ndash;将插件绑定在package这个phase上。也就是说，用户只需执行mvn package ，就会自动执行mvn docker:build&ndash;&gt;
+                        <id>builder-image</id>
+                        &lt;!&ndash;将插件绑定在package这个phase上。也就是说，用户只需执行mvn package ，就会自动执行mvn docker:builder&ndash;&gt;
                         <phase>package</phase>
                         <goals>
-                            <goal>build</goal>
+                            <goal>builder</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -191,9 +191,9 @@
                         <resource>
                             <targetPath>/</targetPath>
                             &lt;!&ndash;jar 包所在的路径 此处配置的 即对应 target 目录&ndash;&gt;
-                            <directory>${project.build.directory}</directory>
+                            <directory>${project.builder.directory}</directory>
                             &lt;!&ndash; 需要包含的 jar包 ，这里对应的是 Dockerfile中添加的文件名　&ndash;&gt;
-                            <include>${project.build.finalName}.jar</include>
+                            <include>${project.builder.finalName}.jar</include>
                         </resource>
                     </resources>
                 </configuration>
@@ -223,7 +223,7 @@
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>build</goal>
+                            <goal>builder</goal>
                         </goals>
                     </execution>
                 </executions>

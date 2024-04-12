@@ -46,32 +46,32 @@ public class ExtractTest {
     @Test
     public void test() {
         String channel = "weixin";
-        List<ExtractElement> extractElements = new ArrayList<>();
+        List<ExtractMetadata> extractMetadata = new ArrayList<>();
         Map<String, String> uriMap = extractWeixinUris(channel);
         uriMap.keySet()
                 .stream()
                 .parallel()
                 .forEach((path) -> {
-                    ExtractElement extractElement = extractElement(channel, path, uriMap.get(path));
-                    extractElements.add(extractElement);
+//                    ExtractMetadata extractMetadata = extractElement(channel, path, uriMap.get(path));
+//                    extractMetadata.add(extractMetadata);
                 });
-        log.info("size:{},content: {}", extractElements.size(), JSONUtil.toJsonPrettyStr(extractElements));
-        buildTree(extractElements);
+        log.info("size:{},content: {}", extractMetadata.size(), JSONUtil.toJsonPrettyStr(extractMetadata));
+        buildTree(extractMetadata);
     }
 
-    public static void buildTree(List<ExtractElement> extractElements) {
+    public static void buildTree(List<ExtractMetadata> extractMetadata) {
         log.info("buildTree");
         //List<TreeNode<String>> treeNodes = new ArrayList<>();
-        //List<Tree<String>> build = TreeUtil.build(treeNodes, "weixin");
-        //System.out.println(JSONUtil.toJsonPrettyStr(build));
+        //List<Tree<String>> builder = TreeUtil.builder(treeNodes, "weixin");
+        //System.out.println(JSONUtil.toJsonPrettyStr(builder));
     }
 
 
-    public static ExtractElement extractElement(String channel, String path, String url) {
+    public static ExtractMetadata extractElement(String channel, String path, String url) {
         ApplicationContext applicationContext = SpringUtil.getApplicationContext();
         JXDocument jxDocument = JXDocument.create(getDocument(url));
-        ExtractElement extractElement = new ExtractElement();
-        List<ExtractPojo> extractPojos = extractElement.getXpath(channel);
+        ExtractMetadata extractMetadata = new ExtractMetadata();
+        List<ExtractPojo> extractPojos = extractMetadata.getXpath(channel);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
             extractPojo.setPath(path);
@@ -81,7 +81,7 @@ public class ExtractTest {
                 extractable.extract(jxDocument, extractPojo);
             }
         }
-        return extractElement;
+        return extractMetadata;
     }
 
 

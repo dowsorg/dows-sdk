@@ -104,7 +104,7 @@ public class BeanBuilder2 {
 
         /*List<TreeNode<String>> elementType = treeNodes.stream().filter(tn -> tn.getExtra().get("elementType").toString().equals("0"))
                 .toList();
-        List<Tree<String>> build1 = TreeUtil.build(elementType, "4891509c-2b5f-431d-9013-e832e41371ef");
+        List<Tree<String>> build1 = TreeUtil.builder(elementType, "4891509c-2b5f-431d-9013-e832e41371ef");
         System.out.println(JSONUtil.toJsonPrettyStr(build1));*/
 
         List<Tree<String>> build = TreeUtil.build(treeNodes, "appa");

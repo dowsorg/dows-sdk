@@ -1,8 +1,6 @@
 package org.dows.sdk.spider;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
-import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.sdk.extract.*;
@@ -61,15 +59,14 @@ public class WeixinOpenSpider implements SdkSpider {
             String targetUrl = host + uri;
             map.put(key, targetUrl);
         });
-        System.out.println(JSONUtil.toJsonPrettyStr(map));
         return map;
     }
 
 
-    public ExtractElement extractElement(String platform, String path, String url) {
+    public ExtractMetadata extractElement(String platform, String path, String url) {
         JXDocument jxDocument = JXDocument.create(SdkSpider.getDocument(url));
-        ExtractElement extractElement = new ExtractElement();
-        List<ExtractPojo> extractPojos = extractElement.toExtracts(platform);
+        ExtractMetadata extractMetadata = new ExtractMetadata();
+        List<ExtractPojo> extractPojos = extractMetadata.toExtracts(platform);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
             extractPojo.setPath(path);
@@ -77,7 +74,7 @@ public class WeixinOpenSpider implements SdkSpider {
             Extractable extractable = applicationContext.getBean(extractor.getHandler());
             extractable.extract(jxDocument, extractPojo);
         }
-        return extractElement;
+        return extractMetadata;
     }
 }
 

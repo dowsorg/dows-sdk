@@ -69,10 +69,10 @@ public class WeixinPaySpider {
     }
 
 
-    public ExtractElement extractElement(String platform, String path, String url) {
+    public ExtractMetadata extractElement(String platform, String path, String url) {
         JXDocument jxDocument = JXDocument.create(SdkSpider.getDocument(url));
-        ExtractElement extractElement = new ExtractElement();
-        List<ExtractPojo> extractPojos = extractElement.toExtracts(platform);
+        ExtractMetadata extractMetadata = new ExtractMetadata();
+        List<ExtractPojo> extractPojos = extractMetadata.toExtracts(platform);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
             extractPojo.setPath(path);
@@ -80,7 +80,7 @@ public class WeixinPaySpider {
             Extractable extractable = applicationContext.getBean(extractor.getHandler());
             extractable.extract(jxDocument, extractPojo);
         }
-        return extractElement;
+        return extractMetadata;
     }
 
 }
