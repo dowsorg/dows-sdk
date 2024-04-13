@@ -3,6 +3,7 @@ package org.dows.sdk.spider;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dows.sdk.extract.FunctionMetadata;
 import org.dows.sdk.extract.*;
 import org.seimicrawler.xpath.JXDocument;
 import org.seimicrawler.xpath.JXNode;
@@ -63,10 +64,10 @@ public class WeixinOpenSpider implements SdkSpider {
     }
 
 
-    public ExtractMetadata extractElement(String platform, String path, String url) {
+    public FunctionMetadata extractMetadata(String platform, String path, String url) {
         JXDocument jxDocument = JXDocument.create(SdkSpider.getDocument(url));
-        ExtractMetadata extractMetadata = new ExtractMetadata();
-        List<ExtractPojo> extractPojos = extractMetadata.toExtracts(platform);
+        FunctionMetadata functionMetadata = new FunctionMetadata();
+        List<ExtractPojo> extractPojos = functionMetadata.toExtracts(platform);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
             extractPojo.setPath(path);
@@ -74,7 +75,7 @@ public class WeixinOpenSpider implements SdkSpider {
             Extractable extractable = applicationContext.getBean(extractor.getHandler());
             extractable.extract(jxDocument, extractPojo);
         }
-        return extractMetadata;
+        return functionMetadata;
     }
 }
 

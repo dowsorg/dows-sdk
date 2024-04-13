@@ -1,6 +1,8 @@
 package org.dows.sdk.extract;
 
 import cn.hutool.extra.spring.SpringUtil;
+import cn.hutool.json.JSONConfig;
+import cn.hutool.json.JSONUtil;
 import lombok.Data;
 import org.dows.sdk.annotations.Extract;
 
@@ -19,7 +21,7 @@ import java.util.Map;
  * 修改人姓名      修改时间        版本号       描述
  */
 @Data
-public class ExtractMetadata {
+public class FunctionMetadata {
     // 类
     private String clazzCode;
     // 类描述
@@ -34,26 +36,25 @@ public class ExtractMetadata {
     private String methodUrl;
     // http方法
     private String httpMethod;
-//    // 入参
-//    private Map<String, List<FieldElement>> input;
-//    // 出参
-//    private Map<String, List<FieldElement>> output;
-//
-//
-//    public static void main(String[] args) {
-//        MethodElement methodElement = new MethodElement();
-//        List<ExtractPojo> weixin = methodElement.getXpath("weixin");
-//        System.out.println(JSONUtil.toJsonPrettyStr(weixin));
-//    }
+    // 入参
+    private List<ArgumentMetadata> inputs;
+    // 出参
+    private ArgumentMetadata output;
+
+    public static void main(String[] args) {
+        FunctionMetadata methodElement = new FunctionMetadata();
+        //List<ExtractPojo> weixin = methodElement.getXpath("weixin");
+        System.out.println(JSONUtil.toJsonStr(methodElement, JSONConfig.create().setIgnoreNullValue(false)));
+    }
 
     public static List<ExtractPojo> getExtract(String platform) {
-        ExtractMetadata extractMetadata = new ExtractMetadata();
-        return extractMetadata.getXpath(platform);
+        FunctionMetadata functionMetadata = new FunctionMetadata();
+        return functionMetadata.getXpath(platform);
     }
 
     public List<ExtractPojo> getXpath(String platform) {
         List<ExtractPojo> extractPojos = new ArrayList<>();
-        Field[] declaredFields = ExtractMetadata.class.getDeclaredFields();
+        Field[] declaredFields = FunctionMetadata.class.getDeclaredFields();
         for (Field declaredField : declaredFields) {
             ExtractPojo extractPojo = new ExtractPojo();
             extractPojo.setField(declaredField);
@@ -87,7 +88,7 @@ public class ExtractMetadata {
             extractorMap.put(name, extract);
         }
         List<ExtractPojo> extractPojos = new ArrayList<>();
-        Field[] declaredFields = ExtractMetadata.class.getDeclaredFields();
+        Field[] declaredFields = FunctionMetadata.class.getDeclaredFields();
         for (Field declaredField : declaredFields) {
             String name = declaredField.getName();
             Extractor extractor = extractorMap.get(name);
@@ -102,6 +103,8 @@ public class ExtractMetadata {
         }
         return extractPojos;
     }
+
+
 
 }
 

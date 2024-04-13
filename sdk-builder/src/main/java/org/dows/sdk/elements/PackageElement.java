@@ -19,6 +19,6 @@ public class PackageElement implements Element {
     private String pgk;
     private String descr;
     // 类
-    private Map<String, ClassElement> classes;
+    private Map<String, BeanElement> classes;
 }
 

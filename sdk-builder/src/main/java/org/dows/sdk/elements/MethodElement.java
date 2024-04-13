@@ -17,7 +17,7 @@ import java.util.Map;
 public class MethodElement implements Element {
 
     @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::*[1]/text()")
-    private ClassElement classElement;
+    private BeanElement beanElement;
 
     // 方法code
     @Extract(channel = "weixin", xpath = "//div[@class='content custom']/h3[@id='接口英文名']/following-sibling::*[1]/text()")

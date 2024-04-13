@@ -6,7 +6,7 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
-import org.dows.sdk.extract.ExtractMetadata;
+import org.dows.sdk.extract.FunctionMetadata;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -27,14 +27,14 @@ import java.util.Map;
 public interface SdkSpider {
 
 
-    default List<ExtractMetadata> crawling(String platform) {
-        List<ExtractMetadata> extractMetadata = new ArrayList<>();
+    default List<FunctionMetadata> crawling(String platform) {
+        List<FunctionMetadata> functionMetadata = new ArrayList<>();
         Map<String, String> uriMap = extractUris(platform);
         uriMap.keySet()
                 .stream()
                 .parallel()
-                .forEach(path -> extractMetadata.add(extractElement(platform, path, uriMap.get(path))));
-        return extractMetadata;
+                .forEach(path -> functionMetadata.add(extractMetadata(platform, path, uriMap.get(path))));
+        return functionMetadata;
     }
 
     /**
@@ -53,7 +53,7 @@ public interface SdkSpider {
      * @param uri
      * @return ExtractElement
      */
-    ExtractMetadata extractElement(String platform, String path, String uri);
+    FunctionMetadata extractMetadata(String platform, String path, String uri);
 
 
     /**

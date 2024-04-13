@@ -1,6 +1,6 @@
 package org.dows.sdk;
 
-import org.dows.sdk.elements.ClassElement;
+import org.dows.sdk.elements.BeanElement;
 
 /**
  * @description: </br>
@@ -20,7 +20,7 @@ public interface FileBuilder {
 
     }
 
-    default void build(ClassElement classElement) {
+    default void build(BeanElement beanElement) {
 
     }
 

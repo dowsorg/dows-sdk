@@ -11,7 +11,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.sdk.annotations.Extract;
-import org.dows.sdk.elements.ClassElement;
+import org.dows.sdk.elements.BeanElement;
 import org.dows.sdk.extract.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,7 +31,7 @@ import java.util.*;
 public class ExtractTest {
     private static final Map<String, Object> map = new HashMap<>();
     private static Map<String, PackageElement> packageMap = new HashMap<>();
-    private static Map<String, ClassElement> classMap = new HashMap<>();
+    private static Map<String, BeanElement> classMap = new HashMap<>();
 
 
     static {
@@ -46,7 +46,7 @@ public class ExtractTest {
     @Test
     public void test() {
         String channel = "weixin";
-        List<ExtractMetadata> extractMetadata = new ArrayList<>();
+        List<FunctionMetadata> functionMetadata = new ArrayList<>();
         Map<String, String> uriMap = extractWeixinUris(channel);
         uriMap.keySet()
                 .stream()
@@ -55,11 +55,11 @@ public class ExtractTest {
 //                    ExtractMetadata extractMetadata = extractElement(channel, path, uriMap.get(path));
 //                    extractMetadata.add(extractMetadata);
                 });
-        log.info("size:{},content: {}", extractMetadata.size(), JSONUtil.toJsonPrettyStr(extractMetadata));
-        buildTree(extractMetadata);
+        log.info("size:{},content: {}", functionMetadata.size(), JSONUtil.toJsonPrettyStr(functionMetadata));
+        buildTree(functionMetadata);
     }
 
-    public static void buildTree(List<ExtractMetadata> extractMetadata) {
+    public static void buildTree(List<FunctionMetadata> functionMetadata) {
         log.info("buildTree");
         //List<TreeNode<String>> treeNodes = new ArrayList<>();
         //List<Tree<String>> builder = TreeUtil.builder(treeNodes, "weixin");
@@ -67,11 +67,11 @@ public class ExtractTest {
     }
 
 
-    public static ExtractMetadata extractElement(String channel, String path, String url) {
+    public static FunctionMetadata extractElement(String channel, String path, String url) {
         ApplicationContext applicationContext = SpringUtil.getApplicationContext();
         JXDocument jxDocument = JXDocument.create(getDocument(url));
-        ExtractMetadata extractMetadata = new ExtractMetadata();
-        List<ExtractPojo> extractPojos = extractMetadata.getXpath(channel);
+        FunctionMetadata functionMetadata = new FunctionMetadata();
+        List<ExtractPojo> extractPojos = functionMetadata.getXpath(channel);
         for (ExtractPojo extractPojo : extractPojos) {
             extractPojo.setUrl(url);
             extractPojo.setPath(path);
@@ -81,7 +81,7 @@ public class ExtractTest {
                 extractable.extract(jxDocument, extractPojo);
             }
         }
-        return extractMetadata;
+        return functionMetadata;
     }
 
 

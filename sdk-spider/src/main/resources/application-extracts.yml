@@ -15,32 +15,32 @@ dows:
             handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
 
           - name: methodName
-            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
+            xpath: //div[@class='content custom']/h1/text()
             handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
 
           - name: methodCode
             xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
             handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
 
-          - name: methodDesc
-            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
-            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+          - name: methodDescr
+            xpath: //div[@class='content custom']/h3[@id='功能描述']/following-sibling::p[1]/text()
+            handler: org.dows.sdk.extract.weixin.WeixinDescrExtractor
 
           - name: methodUrl
-            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
-            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+            xpath: //div[@class='language- extra-class']//code/text()
+            handler: org.dows.sdk.extract.weixin.WeixinHttpMethodExtractor
 
           - name: httpMethod
-            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
-            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+            xpath: //div[@class='language- extra-class']//code/text()
+            handler: org.dows.sdk.extract.weixin.WeixinHttpMethodExtractor
 
           - name: input
-            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
-            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+            xpath: //h3[@id='请求参数']/following-sibling::div[1]/table//tr
+            handler: org.dows.sdk.extract.weixin.WeixinFieldExtractor
 
           - name: output
-            xpath: //div[@class='content custom']/h3[@id='接口英文名']/following-sibling::p[1]/text()
-            handler: org.dows.sdk.extract.weixin.WexinCodeExtractor
+            xpath: //h3[@id='返回参数']/following-sibling::div[1]/table//tr
+            handler: org.dows.sdk.extract.weixin.WeixinFieldExtractor
 
 
 

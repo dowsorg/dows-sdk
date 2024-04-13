@@ -7,8 +7,8 @@ import org.dows.sdk.BuildTooler;
 import org.dows.sdk.BuilderProperties;
 import org.dows.sdk.BuilderSetting;
 import org.dows.sdk.FileBuilder;
-import org.dows.sdk.elements.ClassElement;
-import org.dows.sdk.extract.ExtractMetadata;
+import org.dows.sdk.elements.BeanElement;
+import org.dows.sdk.extract.FunctionMetadata;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -36,21 +36,21 @@ public class MavenTooler implements BuildTooler {
 
     private final Map<String, FileBuilder> fileBuilders;
 
-    public void build(String platform, List<ExtractMetadata> extractMetadata) {
+    public void build(String platform, List<FunctionMetadata> functionMetadata) {
         BuilderSetting builderSetting = builderProperties.getBuilders().get(platform);
         if (null != builderSetting) {
             // 分组
-            Map<String, List<ExtractMetadata>> classMetas = extractMetadata.stream()
-                    .collect(Collectors.groupingBy(ExtractMetadata::getClazzCode));
+            Map<String, List<FunctionMetadata>> classMetas = functionMetadata.stream()
+                    .collect(Collectors.groupingBy(FunctionMetadata::getClazzCode));
             Set<String> classNames = classMetas.keySet();
 
-            List<ClassElement> classElements = new ArrayList<>();
+            List<BeanElement> beanElements = new ArrayList<>();
             classNames.stream().parallel().forEach(className -> {
-                ClassElement classElement = ClassElement.toElement(className,classMetas.get(className));
-                classElements.add(classElement);
+                BeanElement beanElement = BeanElement.toBeanElement(className,classMetas.get(className));
+                beanElements.add(beanElement);
             });
 
-            classElements.stream().parallel().forEach(cm -> {
+            beanElements.stream().parallel().forEach(cm -> {
                 FileBuilder fileBuilder = fileBuilders.get(cm.getBuilder());
                 fileBuilder.build(cm);
             });

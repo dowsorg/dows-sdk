@@ -1,0 +1,45 @@
+[
+  {
+    "clazzCode": "a.b.c",
+    "classDescr": "ccc",
+    "methodCode": "cm",
+    "methodName": "cm",
+    "methodDescr": "do cm",
+    "methodUrl": "http://xxx.com/doo",
+    "httpMethod": "get",
+    "inputs": [
+      {
+        "code": "test",
+        "type": "string",
+        "descr": "test",
+        "required": false,
+        "def": "0"
+      },
+      {
+        "code": "stu",
+        "type": "Student",
+        "descr": "student",
+        "required": false,
+        "def": "{name:'zhangsan',age:18}",
+        "assemble": "list",
+        "childs": [
+          {
+            "code": "name",
+            "type": "string",
+            "descr": "名称",
+            "required": false,
+            "def": ""
+          },
+          {
+            "code": "age",
+            "type": "int",
+            "descr": "年龄",
+            "required": false,
+            "def": "0"
+          }
+        ]
+      }
+    ],
+    "output": null
+  }
+]
