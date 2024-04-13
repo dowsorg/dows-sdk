@@ -36,6 +36,8 @@ public class FunctionMetadata {
     private String methodUrl;
     // http方法
     private String httpMethod;
+    // 文档地址
+    private String docUrl;
     // 入参
     private List<ArgumentMetadata> inputs;
     // 出参
@@ -103,7 +105,6 @@ public class FunctionMetadata {
         }
         return extractPojos;
     }
-
 
 
 }

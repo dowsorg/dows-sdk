@@ -1,5 +1,6 @@
 package org.dows.sdk.tooler;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.template.TemplateEngine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,8 +51,10 @@ public class MavenTooler implements BuildTooler {
                 beanElements.add(beanElement);
             });
 
-            beanElements.stream().parallel().forEach(cm -> {
-                FileBuilder fileBuilder = fileBuilders.get(cm.getBuilder());
+
+            beanElements.stream()./*parallel().*/forEach(cm -> {
+                String beanName = StrUtil.lowerFirst(cm.getBuilder().getSimpleName());
+                FileBuilder fileBuilder = fileBuilders.get(beanName);
                 fileBuilder.build(cm);
             });
 

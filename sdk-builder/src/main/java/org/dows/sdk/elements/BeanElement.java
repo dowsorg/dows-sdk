@@ -2,6 +2,8 @@ package org.dows.sdk.elements;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.dows.sdk.FileBuilder;
+import org.dows.sdk.builder.BeanBuilder;
 import org.dows.sdk.extract.ArgumentMetadata;
 import org.dows.sdk.extract.FunctionMetadata;
 
@@ -33,7 +35,7 @@ public class BeanElement implements Element {
     private int index;
     // 元素对应模板的类型[entity,mapper,service,controller]
     @Setter
-    private String builder;
+    private Class<? extends FileBuilder> builder;
 
     @Setter
     private Map<String, BeanElement> interfaces;
@@ -67,6 +69,7 @@ public class BeanElement implements Element {
             methodElement.setOutput(null);
             methods.put(em.getMethodCode(), methodElement);
         }
+        beanElement.setBuilder(BeanBuilder.class);
         beanElement.setCode(className);
         beanElement.setName(className);
         beanElement.setDescr(classDescr);

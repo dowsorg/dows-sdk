@@ -10,6 +10,8 @@ dows:
         base-package: org.dows.sdk.weixin.open
         builders:
           - org.dows.sdk.builder.EntityBuilder
+          - org.dows.sdk.builder.RestBuilder
+          - org.dows.sdk.builder.YmlBuilder
         childs:
           - artifactId: weixin-api
 

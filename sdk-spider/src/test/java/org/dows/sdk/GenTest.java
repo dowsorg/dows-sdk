@@ -38,9 +38,9 @@ public class GenTest {
     @Test
     public void test() {
         // extract
-        //List<ExtractElement> extractElements = weixinOpenSpider.crawling("weixin-open");
+        List<FunctionMetadata> extractElements = weixinOpenSpider.crawling("weixin-open");
         List<FunctionMetadata> functionMetadata = new ArrayList<>();
-        try {
+        /*try {
             ObjectMapper objectMapper = new ObjectMapper();
             CollectionType collectionType = objectMapper.getTypeFactory()
                     .constructCollectionType(List.class, FunctionMetadata.class);
@@ -48,8 +48,11 @@ public class GenTest {
             functionMetadata = objectMapper.readValue(inputStream, collectionType);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         log.info(JSONUtil.toJsonPrettyStr(functionMetadata));
+
+
+
         // todo builder
         mavenTooler.build("weixin-open", functionMetadata);
         // todo dispatch

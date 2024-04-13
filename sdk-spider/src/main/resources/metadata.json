@@ -5,6 +5,7 @@
     "methodCode": "cm",
     "methodName": "cm",
     "methodDescr": "do cm",
+    "docUrl": "http://xxx.com/doc",
     "methodUrl": "http://xxx.com/doo",
     "httpMethod": "get",
     "inputs": [
