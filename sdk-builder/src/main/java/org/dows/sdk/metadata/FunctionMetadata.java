@@ -1,10 +1,15 @@
-package org.dows.sdk.extract;
+package org.dows.sdk.metadata;
 
+import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONConfig;
 import cn.hutool.json.JSONUtil;
 import lombok.Data;
 import org.dows.sdk.annotations.Extract;
+import org.dows.sdk.extract.ExtractPojo;
+import org.dows.sdk.extract.ExtractProperties;
+import org.dows.sdk.extract.ExtractSetting;
+import org.dows.sdk.extract.Extractor;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -21,7 +26,7 @@ import java.util.Map;
  * 修改人姓名      修改时间        版本号       描述
  */
 @Data
-public class FunctionMetadata {
+public class FunctionMetadata extends AbstractMetadata {
     // 类
     private String clazzCode;
     // 类描述
@@ -39,9 +44,9 @@ public class FunctionMetadata {
     // 文档地址
     private String docUrl;
     // 入参
-    private List<ArgumentMetadata> inputs;
+    private List<Tree<Integer>> inputs;
     // 出参
-    private ArgumentMetadata output;
+    private Tree<Integer> output;
 
     public static void main(String[] args) {
         FunctionMetadata methodElement = new FunctionMetadata();

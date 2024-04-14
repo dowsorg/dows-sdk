@@ -20,7 +20,7 @@ public interface FileBuilder {
 
     }
 
-    default void build(BeanElement beanElement) {
+    default void build(BeanElement beanElement, BuilderSetting builderSetting) {
 
     }
 

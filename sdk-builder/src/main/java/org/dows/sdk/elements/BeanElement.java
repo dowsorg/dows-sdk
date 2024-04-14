@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.dows.sdk.FileBuilder;
 import org.dows.sdk.builder.BeanBuilder;
-import org.dows.sdk.extract.ArgumentMetadata;
-import org.dows.sdk.extract.FunctionMetadata;
+import org.dows.sdk.metadata.FunctionMetadata;
+import org.dows.sdk.model.FunctionModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ public class BeanElement implements Element {
     private int index;
     // 元素对应模板的类型[entity,mapper,service,controller]
     @Setter
-    private Class<? extends FileBuilder> builder;
+    private List<Class<? extends FileBuilder>> builders;
 
     @Setter
     private Map<String, BeanElement> interfaces;
@@ -62,14 +62,41 @@ public class BeanElement implements Element {
             methodElement.setHttpMethod(em.getHttpMethod());
             methodElement.setDescr(em.getMethodDescr());
             methodElement.setMethodUrl(em.getMethodUrl());
-            List<ArgumentMetadata> inputs = em.getInputs();
+            //List<ElementMetadata> inputs = em.getInputs();
 
 
             //methodElement.setInput();
             methodElement.setOutput(null);
             methods.put(em.getMethodCode(), methodElement);
         }
-        beanElement.setBuilder(BeanBuilder.class);
+        //beanElement.setBuilder(BeanBuilder.class);
+        beanElement.setCode(className);
+        beanElement.setName(className);
+        beanElement.setDescr(classDescr);
+        beanElement.setMethods(methods);
+        return beanElement;
+    }
+
+
+    public static BeanElement toFunctionBeanElement(String className, List<FunctionModel> functionModels) {
+        BeanElement beanElement = new BeanElement();
+        String classDescr = "";
+        Map<String, MethodElement> methods = new HashMap<>();
+        for (FunctionModel em : functionModels) {
+            classDescr = em.getClassDescr();
+            MethodElement methodElement = new MethodElement();
+            methodElement.setCode(em.getMethodCode());
+            methodElement.setHttpMethod(em.getHttpMethod());
+            methodElement.setDescr(em.getMethodDescr());
+            methodElement.setMethodUrl(em.getMethodUrl());
+            //List<ElementMetadata> inputs = em.getInputs();
+
+
+            //methodElement.setInput();
+            methodElement.setOutput(null);
+            methods.put(em.getMethodCode(), methodElement);
+        }
+        //beanElement.setBuilder(BeanBuilder.class);
         beanElement.setCode(className);
         beanElement.setName(className);
         beanElement.setDescr(classDescr);
@@ -79,7 +106,7 @@ public class BeanElement implements Element {
 
 
     public void buildArgs(FunctionMetadata em) {
-        List<ArgumentMetadata> inputs = em.getInputs();
+        //List<ElementMetadata> inputs = em.getInputs();
 
 
     }

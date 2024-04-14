@@ -13,7 +13,7 @@ import java.util.List;
  * 修改人姓名      修改时间        版本号       描述
  */
 @Data
-public class BuilderSetting {
+public class ModuleSetting {
 
     private String dialect;
 
@@ -21,12 +21,12 @@ public class BuilderSetting {
     private String groupId;
     private String artifactId;
     private String version;
-    private String pkg;
+    private String basePackage;
     private String template;
-    private String path;
+    private String root;
 
     private List<Class<? extends FileBuilder>> builders;
 
-    private List<BuilderSetting> childs;
+    private List<ModuleSetting> childs;
 }
 

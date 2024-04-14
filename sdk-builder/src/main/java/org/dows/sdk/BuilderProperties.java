@@ -19,6 +19,8 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "dows.sdk")
 public class BuilderProperties {
 
+    private Class<? extends BuildTooler> tooler;
+
     private Map<String, BuilderSetting> builders;
 
 }

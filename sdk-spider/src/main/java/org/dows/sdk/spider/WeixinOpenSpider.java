@@ -3,7 +3,7 @@ package org.dows.sdk.spider;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.sdk.extract.FunctionMetadata;
+import org.dows.sdk.metadata.FunctionMetadata;
 import org.dows.sdk.extract.*;
 import org.seimicrawler.xpath.JXDocument;
 import org.seimicrawler.xpath.JXNode;

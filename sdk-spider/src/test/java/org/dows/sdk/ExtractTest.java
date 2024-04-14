@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dows.sdk.annotations.Extract;
 import org.dows.sdk.elements.BeanElement;
 import org.dows.sdk.extract.*;
+import org.dows.sdk.metadata.FunctionMetadata;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;

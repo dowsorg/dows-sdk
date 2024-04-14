@@ -1,0 +1,85 @@
+{
+
+  "databases": [
+    {
+      "name": "db1",
+      "tables": [
+        {
+          "name": "demo",
+          "columns": [
+            {
+              "name": "",
+              "type": "",
+              "defaultValue": "",
+              "nullable": false,
+              "primaryKey": false,
+              "unique": false,
+              "index": false,
+              "autoIncrement": false,
+              "comment": "",
+              "length": ""
+            },
+            {
+              "name": "",
+              "type": "",
+              "defaultValue": "",
+              "nullable": false,
+              "primaryKey": false,
+              "unique": false,
+              "index": false,
+              "autoIncrement": false,
+              "comment": "",
+              "length": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "clazzCode": "a.b.c",
+      "classDescr": "ccc",
+      "methodCode": "cm",
+      "methodName": "cm",
+      "methodDescr": "do cm",
+      "docUrl": "http://xxx.com/doc",
+      "methodUrl": "http://xxx.com/doo",
+      "httpMethod": "get",
+      "inputs": [
+        {
+          "name": "test",
+          "type": "string",
+          "comment": "test",
+          "nullable": false,
+          "defaultValue": "0"
+        },
+        {
+          "name": "stu",
+          "type": "Student",
+          "comment": "student",
+          "nullable": false,
+          "defaultValue": "{name:'zhangsan',age:18}",
+          "assemble": "list",
+          "childs": [
+            {
+              "name": "name",
+              "type": "string",
+              "comment": "名称",
+              "nullable": false,
+              "defaultValue": ""
+            },
+            {
+              "name": "age",
+              "type": "int",
+              "comment": "年龄",
+              "nullable": false,
+              "defaultValue": "0"
+            }
+          ]
+        }
+      ],
+      "output": null
+    }
+  ]
+}

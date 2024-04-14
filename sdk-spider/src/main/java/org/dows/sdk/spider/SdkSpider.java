@@ -6,7 +6,7 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
-import org.dows.sdk.extract.FunctionMetadata;
+import org.dows.sdk.metadata.FunctionMetadata;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

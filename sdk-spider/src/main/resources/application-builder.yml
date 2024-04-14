@@ -7,13 +7,18 @@ dows:
         groupId: org.dows.sdk
         artifactId: weixin-sdk
         version: 1.0.0-SNAPSHOT
-        base-package: org.dows.sdk.weixin.open
-        builders:
-          - org.dows.sdk.builder.EntityBuilder
-          - org.dows.sdk.builder.RestBuilder
-          - org.dows.sdk.builder.YmlBuilder
-        childs:
-          - artifactId: weixin-api
+        pkg: org.dows.sdk.weixin.open
+        path: e:/workspaces/projects/java/demo
+        #        dependencies:
+        #          - org.dows.sdk.weixin.pay:1.0.0-SNAPSHOT
+        #          - org.dows.sdk.weixin.mp:1.0.0-SNAPSHOT
+        #          - org.dows.sdk.weixin.miniapp:1.0.0-SNAPSHOT
+        #        builders:
+        #          - org.dows.sdk.builder.EntityBuilder
+        #          - org.dows.sdk.builder.RestBuilder
+        #          - org.dows.sdk.builder.YmlBuilder
+#        childs:
+#          - artifactId: weixin-api
 
       weixin-pay:
         dialect: java

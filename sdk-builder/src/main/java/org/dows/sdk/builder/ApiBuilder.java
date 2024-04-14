@@ -14,19 +14,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @description: </br>
- * @author: lait.zhang@gmail.com
- * @date: 4/13/2024 7:20 PM
- * @history: </br>
- * <author>      <time>      <version>    <desc>
- * 修改人姓名      修改时间        版本号       描述
- */
 @Slf4j
 @Component
 @Data
-public class BeanBuilder implements FileBuilder {
-    private String template = "bean.ftl";
+public class ApiBuilder implements FileBuilder {
+    private String template = "api.ftl";
 
     private TemplateEngine templateEngine;
 

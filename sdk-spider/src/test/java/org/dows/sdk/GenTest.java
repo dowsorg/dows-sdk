@@ -2,9 +2,9 @@ package org.dows.sdk;
 
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.extern.slf4j.Slf4j;
-import org.dows.sdk.extract.FunctionMetadata;
+import org.dows.sdk.metadata.FunctionMetadata;
+import org.dows.sdk.model.ProjectModel;
 import org.dows.sdk.spider.SdkSpider;
 import org.dows.sdk.tooler.MavenTooler;
 import org.junit.jupiter.api.Test;
@@ -38,24 +38,25 @@ public class GenTest {
     @Test
     public void test() {
         // extract
-        List<FunctionMetadata> extractElements = weixinOpenSpider.crawling("weixin-open");
+        //List<FunctionMetadata> extractElements = weixinOpenSpider.crawling("weixin-open");
         List<FunctionMetadata> functionMetadata = new ArrayList<>();
-        /*try {
+        try {
             ObjectMapper objectMapper = new ObjectMapper();
-            CollectionType collectionType = objectMapper.getTypeFactory()
+            InputStream inputStream = new ClassPathResource("metadata1.json").getInputStream();
+            /*CollectionType collectionType = objectMapper.getTypeFactory()
                     .constructCollectionType(List.class, FunctionMetadata.class);
-            InputStream inputStream = new ClassPathResource("metadata.json").getInputStream();
             functionMetadata = objectMapper.readValue(inputStream, collectionType);
+            log.info(JSONUtil.toJsonPrettyStr(functionMetadata));
+            // todo builder
+            mavenTooler.build("weixin-open", functionMetadata);
+            */
+            ProjectModel projectModel = objectMapper.readValue(inputStream, ProjectModel.class);
+            log.info(JSONUtil.toJsonPrettyStr(projectModel));
+            mavenTooler.build("weixin-open", projectModel);
+            // todo dispatch
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }*/
-        log.info(JSONUtil.toJsonPrettyStr(functionMetadata));
-
-
-
-        // todo builder
-        mavenTooler.build("weixin-open", functionMetadata);
-        // todo dispatch
+        }
 
 
     }
