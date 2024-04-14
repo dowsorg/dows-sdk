@@ -1,6 +1,5 @@
 package org.dows.sdk.tooler;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.json.JSONUtil;
@@ -10,6 +9,7 @@ import org.dows.sdk.BuildTooler;
 import org.dows.sdk.BuilderProperties;
 import org.dows.sdk.BuilderSetting;
 import org.dows.sdk.FileBuilder;
+import org.dows.sdk.builder.ApiBuilder;
 import org.dows.sdk.builder.ModuleBuilder;
 import org.dows.sdk.builder.RestBuilder;
 import org.dows.sdk.elements.BeanElement;
@@ -66,9 +66,9 @@ public class MavenTooler implements BuildTooler {
             log.info("===={}", JSONUtil.toJsonPrettyStr(builderSetting));
 
             beanElements.stream().parallel().forEach(cm -> {
-                String beanName = StrUtil.lowerFirst(cm.getBuilder().getSimpleName());
+                /*String beanName = StrUtil.lowerFirst(cm.getBuilder().getSimpleName());
                 FileBuilder fileBuilder = fileBuilders.get(beanName);
-                fileBuilder.build(cm, builderSetting);
+                fileBuilder.build(cm, builderSetting);*/
             });
 
         }
@@ -98,7 +98,7 @@ public class MavenTooler implements BuildTooler {
 
 
             List<Class<? extends FileBuilder>> builderClass = new ArrayList<>();
-            //builderClass.add(ApiBuilder.class);
+            builderClass.add(ApiBuilder.class);
             builderClass.add(RestBuilder.class);
             List<BeanElement> beanElements = new ArrayList<>();
             classNames.stream().parallel().forEach(className -> {
