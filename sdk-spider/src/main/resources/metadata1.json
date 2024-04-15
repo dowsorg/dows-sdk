@@ -1,5 +1,8 @@
 {
-
+  "builder": {
+  },
+  "configs": {
+  },
   "databases": [
     {
       "name": "db1",
